@@ -1,0 +1,53 @@
+<DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+            <title>
+                {% block title %}
+                    
+                {% endblock %}
+            </title>
+        </head>
+        <body>
+            <nav class="nav-container-authenticated">
+                <div style="order: 2">
+                    <a href="{{ url_for('market_page') }}"><h1>SCHOOL MARKET</h1></a>
+                </div>
+                <div style="order: 3">
+                    <img src="static/logo.png" style="width: 50px; border-top-left-radius: 21px; border-top-right-radius: 21px;">
+                </div>
+                <div style="order: 4; margin-top: 10px">
+                    <form method='POST'>
+                        {{ searchForm.hidden_tag() }}
+                        {{ searchForm.productName(id='search-bar', placeholder='Search for a product') }}
+                        {{ searchForm.submit(id='search-button') }}
+                    </form>
+                </div>
+                <div style="order: 5">
+                    <div class="dropdown">
+                        <h2 class="dropbtn">My Account</h2>
+                        <div class="dropdown-content">
+                            <a href="#">My Details</a>
+                            <a href="{{ url_for('cart_page', cart_code='none') }}">Cart</a>
+                            <a href="#">My Orders</a>
+                            <hr>
+                            <a href="{{ url_for('logout_page') }}">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        {% for messages in get_flashed_messages(category_filter=['success']) %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% for messages in get_flashed_messages(category_filter=['error']) %}
+            <div class="alert" style="background-color: rgb(241, 102, 102);">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% block body %}
+        {% endblock %}

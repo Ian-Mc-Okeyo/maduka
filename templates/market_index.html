@@ -1,0 +1,100 @@
+{% extends 'market_base.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block body %}
+    <div class="market-home-page">
+        <div class="category-nav">
+            <div><h1>Books</h1></div>
+            <div><a href="{{ url_for('all_page', product_category='books') }}"><h2>View All>></h2></a></div>
+        </div>
+        <div class="products-category">
+            {% for book in products['books'] %}
+                <a href="{{ url_for('product_page', product_code = book.code, cart_code='none') }}" class="product-card">
+                        <div style="order: 1">
+                            <img src="static/{{ book.code }}.png" class="product-img">
+                        </div>
+                        <div style="order: 2">
+                            <p style="font-weight: 900;">{{ book.title }} <br> Price: Ksh {{ book.price }}</p>
+                        </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="category-nav">
+            <div><h1>Stationery</h1></div>
+            <div><a href="{{ url_for('all_page', product_category='stationery') }}"><h2>View All>></h2></a></div>
+        </div>
+        <div class="products-category">
+            {% for stationery in products['stationery'] %}
+                <a href="{{ url_for('product_page', product_code = stationery.code, cart_code='none') }}" class="product-card">
+                        <div style="order: 1">
+                            <img src="static/{{ stationery.code }}.png" class="product-img">
+                        </div>
+                        <div style="order: 2">
+                            <p style="font-weight: 900;">{{ stationery.title }} <br> Price: Ksh {{ stationery.price }}</p>
+                        </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="category-nav">
+            <div><h1>Lab Equipment</h1></div>
+            <div><a href="{{ url_for('all_page', product_category='lab') }}"><h2>View All>></h2></a></div>
+        </div>
+        <div class="products-category">
+            {% for lab in products['lab'] %}
+                <a href="{{ url_for('product_page', product_code = lab.code, cart_code='none') }}" class="product-card">
+                        <div style="order: 1">
+                            <img src="static/{{ lab.code }}.png" class="product-img">
+                        </div>
+                        <div style="order: 2">
+                            <p style="font-weight: 900;">{{ lab.title }} <br> Price: Ksh {{ lab.price }}</p>
+                        </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="category-nav">
+            <div><h1>Uniforms</h1></div>
+            <div><a href="{{ url_for('all_page', product_category='uniform') }}"><h2>View All>></h2></a></div>
+        </div>
+        <div class="products-category">
+            {% for uniform in products['uniforms'] %}
+                <a href="{{ url_for('product_page', product_code = uniform.code, cart_code='none') }}" class="product-card">
+                        <div style="order: 1">
+                            <img src="static/{{ uniform.code }}.png" class="product-img">
+                        </div>
+                        <div style="order: 2">
+                            <p style="font-weight: 900;">{{ uniform.title }} <br> Price: Ksh {{ uniform.price }}</p>
+                        </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            <div class="footer-details" style="order: 1;">
+                <div style="order: 1;">
+                    <h1 style="color: blue;;">CONTACT US</h1>
+                    <h3><bold style="font-size: 1.5em; color: rgb(236, 232, 232);">Phone Number:</bold> 0796417598</h3>
+                    <h3><bold style="font-size: 1.5em; color: rgb(236, 232, 232);">Email:</bold> schoolmarket@gmail.com</h3>
+                    <h3><bold style="font-size: 1.5em; color: rgb(236, 232, 232);">Office Location:</bold> HALL 6 JKUAT</h3>
+                </div>
+                <div style="order: 2;">
+                    <h1 style="color: blue;">PAYMENT METHODS</h1>
+                    <ul>
+                        <li style="font-size: 1.5em; color: rgb(236, 232, 232);">MPESA</li>
+                        <li style="font-size: 1.5em; color: rgb(236, 232, 232);">PAYPAL</li>
+                        <li style="font-size: 1.5em; color: rgb(236, 232, 232);">KCB</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="order: 2">
+                <img src="static/logo.png" style="width: 200px">
+            </div>
+            <div style="order: 3">
+                <h2 style="color:rgb(255, 217, 0)">School Market; The learner's online store</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}

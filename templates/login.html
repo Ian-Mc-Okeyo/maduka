@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+    Login
+{% endblock %}
+{% block body %}
+    <div id="register-page">
+        <form method='POST'>
+            {{ form.hidden_tag() }}
+            <div style="order: 1">
+                {{ form.userName.label(class='labels') }}
+            </div>
+            <div style="order: 2">
+                {{ form.userName(class='forms', placeholder='Enter your user name') }}
+            </div>
+            <div style="order: 3">
+                {{ form.email.label(class='labels') }}
+            </div>
+            <div style="order: 4">
+                {{ form.email(class='forms', placeholder='Enter a valid Email address') }}
+            </div>
+            <div style="order: 5">
+                {{ form.password.label(class='labels') }}
+            </div>
+            <div style="order: 6">
+                {{ form.password(class='forms', placeholder='Enter your password') }}
+            </div>
+            <div style="order: 7">
+                {{ form.submit(class='register-submit') }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

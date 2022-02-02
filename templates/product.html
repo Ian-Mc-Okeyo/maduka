@@ -1,0 +1,47 @@
+{% extends 'market_base.html' %}
+{% block title %}
+    {{ product.title }}
+{% endblock %}
+{% block body %}
+    <div id='product-page'>
+        <div style="order: 1">
+            <img src="static/{{ product.code }}.png" id='product-page-img'>
+        </div>
+        <div style="order: 2" id='description'>
+            <div style="order: 1">
+                <h1 id="product-title">{{ product.title }}</h1>
+            </div>
+            <div style="order: 2" id='description-content'>
+                <p>
+                    {{ product.description }}
+                </p>
+            </div>
+            <div style="order: 2" id='description-content'>
+                <i style="font-size: 1.15em;">Author: </i>{{ product.author }}
+            </div>
+            <div style="order: 3" id='description-content'>
+                <br>
+                <i style="font-size: 1.15em;">Stock: </i>{{ product.numberOfItems }}
+            </div>
+            <div style="order: 4" id='description-content'>
+                <br>
+                <i style="font-size: 1.15em;">Price: </i>@Ksh {{ product.price }}
+            </div>
+        </div>
+        <div id="actions-on-product" style="order: 3">
+            <div>
+                    <a href="{{ url_for('product_page', product_code=product.code, cart_code=product.code) }}" id='actions-on-product-submit'>
+                        {% if current_user in product.users_interested %}
+                            Remove from Cart 
+                        {% else %}
+                            Add to Cart
+                        {% endif %}
+                    </a>            
+            </div>
+            <div>
+                <a href="{{ url_for('order_page') }}" id='actions-on-product-submit'>Make an Order</a>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

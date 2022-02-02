@@ -1,0 +1,40 @@
+<DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+            <title>
+                {% block title %}
+                    
+                {% endblock %}
+            </title>
+        </head>
+        <body>
+            <nav class='navContainer-not-authenticated'>
+                <div>
+                    <a href="{{ url_for('home_page') }}" style="text-decoration: none;"><b style="color: rgb(255, 217, 0); font-size: 1.5em; font-weight: 700;">SCHOOL MARKET</b></a>
+                </div>
+                <div></div>
+                <div>
+                    <a href="{{ url_for('login_page') }}">Login</a>
+                </div>
+                <div>
+                    <a style="color: rgb(255, 217, 0); font-weight: 700;" href="{{ url_for('register_page') }}">Register</a>
+                </div>
+            </nav>
+        {% for messages in get_flashed_messages(category_filter=['success']) %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% for messages in get_flashed_messages(category_filter=['error']) %}
+            <div class="alert" style="background-color: rgb(241, 102, 102);">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
