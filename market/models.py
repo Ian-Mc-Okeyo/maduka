@@ -34,7 +34,7 @@ user_shop_orders=db.Table('user_shop_orders',
     )
 
 shop_orders=db.Table('shop_orders', 
-    db.Column('shop_code', db.Integer(), db.ForeignKey('shop.shopCode')),
+    db.Column('shop_id', db.Integer(), db.ForeignKey('shop.id')),
     db.Column('order_id', db.String(), db.ForeignKey('shop_order.code'))
 )
 
@@ -67,14 +67,14 @@ class User(db.Model, UserMixin): #UserMixin contains additional methods used  du
 
 class Owner(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    ownerName = db.Column(db.String(), db.ForeignKey('user.userName'), nullable=False, unique=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False, unique=True)
     shops = db.relationship('Shop', backref='owner', lazy=True)
     
 #the seller's database and shops
 class Shop(db.Model, UserMixin):
-    shopCode = db.Column(db.String(length=10), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)
     shopName = db.Column(db.String(), nullable=False, unique=True)
-    ownerName = db.Column(db.String(), db.ForeignKey('owner.ownerName'), nullable=False)
+    owner_id = db.Column(db.Integer(), db.ForeignKey('owner.id'), nullable=False)
     category = db.Column(db.String(), nullable=False)
     paybill = db.Column(db.String())
     country = db.Column(db.String())
@@ -90,7 +90,7 @@ product_cart = db.Table('product_cart',
 
 class Product(db.Model):
     productCode = db.Column(db.String(), primary_key=True)
-    shopName = db.Column(db.String(), db.ForeignKey('shop.shopName'), nullable=False)
+    shop_id = db.Column(db.Integer(), db.ForeignKey('shop.id'), nullable=False)
     title = db.Column(db.String(), nullable=False)
     price = db.Column(db.Float(), nullable=False)
     stock = db.Column(db.Integer(), nullable=False)

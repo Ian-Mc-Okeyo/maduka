@@ -82,20 +82,21 @@ def save_product_pic(form_picture):
 def create_shop():
     form = CreateShop()
     if form.validate_on_submit():
-        #generating the shop code
-        code = randint(1000000000, 9999999999)
         #checking if the password is correct
         attempting_user = User.query.filter_by(userName=form.userName.data).first()
         if attempting_user.check_password_correction(attempted_password=form.password.data):
-            check_owner = Owner.query.filter_by(ownerName=form.userName.data).first()
+            check_owner = Owner.query.filter_by(user_id=attempting_user.id).first()
             if not check_owner:
-                new_owner= Owner(ownerName=form.userName.data)
+                new_owner= Owner(user_id=attempting_user.id)
                 db.session.add(new_owner)
                 db.session.commit()
             
+            #loading the owner
+            owner = Owner.query.filter_by(user_id=attempting_user.id).first()
+            
             if form.uploadPic.data:
                 picture_fn = save_profile_pic(form.uploadPic.data)
-                new_shop = Shop(shopCode=code, shopName=form.shopName.data, ownerName=form.userName.data, 
+                new_shop = Shop(shopName=form.shopName.data, owner_id=owner.id, 
                                 category=form.category.data, country=form.country.data, town=form.town.data,
                                 profilePic=picture_fn
                             )
@@ -115,9 +116,9 @@ def open_shop():
     if form.validate_on_submit():
         check_user = User.query.filter_by(userName=form.ownerName.data).first()
         if check_user:
-            check_owner=Owner.query.filter_by(ownerName=form.ownerName.data).first()
+            check_owner=Owner.query.filter_by(user_id=check_user.id).first()
             if check_owner:
-                check_shop = Shop.query.filter_by(shopName=form.shopName.data, ownerName=form.ownerName.data).first()
+                check_shop = Shop.query.filter_by(shopName=form.shopName.data, owner_id=check_owner.id).first()
                 if check_shop:
                     if check_user.check_password_correction(attempted_password=form.password.data):
                         login_user(check_user)
@@ -137,7 +138,8 @@ def open_shop():
 @app.route('/manageShop', methods=['POST', 'GET'])
 @login_required
 def manage_home():
-    current_shop = Shop.query.filter_by(ownerName=current_user.userName).first()
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
@@ -151,13 +153,14 @@ def manage_home():
 @login_required
 def add_product():
     form = addProductForm()
-    current_shop = Shop.query.filter_by(ownerName=current_user.userName).first()
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
     if form.validate_on_submit():
         display_pic = save_product_pic(form.displayPic.data)
-        new_product=Product(productCode=secrets.token_hex(10), shopName=current_shop.shopName, title=form.title.data,
+        new_product=Product(productCode=secrets.token_hex(10), shop_id=current_shop.id, title=form.title.data,
                              price=form.price.data, stock=form.stock.data, displayPic=display_pic, description=form.description.data)
         
         print(type(form.extraPics.data))
@@ -192,14 +195,12 @@ def add_product():
 def change_shop_details():
     detailsForm = ShopDetailsForm()
     changePasswordForm=ChangePasswordForm()
-    current_shop = Shop.query.filter_by(ownerName=current_user.userName).first()
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
-    
-    details_errors = detailsForm.errors
-    password_errors = changePasswordForm.errors    
-
-    if detailsForm.data and detailsForm.validate_on_submit():
+        
+    if detailsForm.submit1.data and detailsForm.validate_on_submit():
         current_user.userName = detailsForm.userName.data
         current_user.email = detailsForm.email.data
         current_user.phoneNo = detailsForm.phoneNo.data
@@ -210,7 +211,6 @@ def change_shop_details():
         current_shop.category = detailsForm.category.data
 
         if detailsForm.displayPic.data:
-            initial_pic = current_shop.profilePic
             os.unlink(os.path.join(app.root_path, 'static/profile_pics/'+current_shop.profilePic))
             current_shop.profilePic = save_profile_pic(detailsForm.displayPic.data)
         
@@ -219,7 +219,7 @@ def change_shop_details():
         flash('Details successfully updated', category='success')
         return redirect(url_for('change_shop_details'))
 
-    if changePasswordForm.submit2.data and changePasswordForm.validate_on_submit:
+    if changePasswordForm.submit2.data and changePasswordForm.validate_on_submit():
         current_user.password=changePasswordForm.newPassword.data
         db.session.commit()
         flash('Your password has been successfully updated', category='success')
@@ -228,8 +228,27 @@ def change_shop_details():
     
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
     return render_template('manageShop/change_details.html', current_shop=current_shop,detailsForm=detailsForm, changePasswordForm=changePasswordForm,
-        profile_pic=profile_pic_fn, shopCategory=current_shop.category, shopName = current_shop.shopName, details_errors=details_errors,
-        password_errors=password_errors)
+        profile_pic=profile_pic_fn, shopCategory=current_shop.category, shopName = current_shop.shopName,  details_errors = detailsForm.errors,
+        password_errors = changePasswordForm.errors)
+
+
+@app.route('/manageShop/<product_code>', methods=['GET', 'POST'])
+def specific_product_page(product_code):
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    if not current_shop:#to redirect users who have no shops to the create shop url
+        return redirect(url_for('open_shop'))
+    
+    product = Product.query.filter_by(productCode=product_code).first()
+    if product:
+        print('Product found')
+    else:
+        print('Not found')
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
+    return render_template('manageShop/seller_product.html', product=product, profile_pic=profile_pic_fn, 
+                    shopCategory=current_shop.category, shopName = current_shop.shopName)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():

@@ -7,26 +7,26 @@
     <form class="form-area" method='POST' enctype="multipart/form-data" style="flex: 1; min-width: 300px;">
          {{ detailsForm.hidden_tag() }}
          <h2>Shop details</h2>
-         {{ detailsForm.userName.label(id='details-label') }}  <br> 
+         {{ detailsForm.userName.label(id='details-label') }}  <br>
          {{ detailsForm.userName(class='change-details-forms', value=current_user.userName) }}  <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['userName'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['userName'] }}</b> <br>
          {{ detailsForm.shopName.label(id='details-label') }}  <br> 
          {{ detailsForm.shopName(class='change-details-forms', value=current_shop.shopName) }}  <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['shopName'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['shopName'] }}</b> <br>
          {{ detailsForm.category.label(id='details-label') }}  <br> 
          {{ detailsForm.category(class='change-details-forms', value=current_shop.category) }}  <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['category'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['category'] }}</b> <br>
          {{ detailsForm.email.label(id='details-label') }}  <br>
          {{ detailsForm.email(class='change-details-forms', value=current_user.email) }} <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['email'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['email'] }}</b> <br>
 
          <div class="sub-details-label-section">
             {{ detailsForm.phoneNo.label(id='details-label') }} 
             <p></p>{{ detailsForm.paybill.label(id='details-label') }}  <br>
          </div> 
          {{ detailsForm.phoneNo(class='sub-change-details-form', value=current_user.phoneNo) }}  {{ detailsForm.paybill(class='sub-change-details-form', value=current_shop.paybill) }} <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['phoneNo'] }}</b> 
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['paybill'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['phoneNo'] }}</b> <br>
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['paybill'] }}</b> <br>
 
          <div class="sub-details-label-section">
             {{ detailsForm.town.label(id='details-label') }} 
@@ -34,12 +34,12 @@
          </div>
          
          {{ detailsForm.town(class='sub-change-details-form', value=current_shop.town) }}  {{ detailsForm.country(class='sub-change-details-form', value=current_shop.country) }} <br>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['town'] }}</b>
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['country'] }}</b> 
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['town'] }}</b><br>
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['country'] }}</b> <br>
 
          {{ detailsForm.displayPic.label(id='details-label') }} <br>
          {{ detailsForm.displayPic() }}
-         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['displayPic'] }}</b>  
+         <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['displayPic'] }}</b>  <br>
          {{ detailsForm.submit1(class='change-details-submit') }}
     </form>
     <form method='POST' class="form-area" style="flex: 1; min-width: 300px;">
@@ -47,13 +47,13 @@
         <h2>Change Password</h2>
         {{ changePasswordForm.oldPassword.label(id='details-label') }}   <br>       
         {{ changePasswordForm.oldPassword(class='change-details-forms') }}  <br>
-        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['oldPassword'] }}</b>  
+        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['oldPassword'] }}</b> <br> 
         {{ changePasswordForm.newPassword.label(id='details-label') }}  <br> 
         {{ changePasswordForm.newPassword(class='change-details-forms') }}  <br>
-        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['newPassword'] }}</b>   
+        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['newPassword'] }}</b>  <br> 
         {{ changePasswordForm.confirmPassword.label(id='details-label') }}  <br> 
         {{ changePasswordForm.confirmPassword(class='change-details-forms') }}  <br>
-        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['confirmPassword'] }}</b>  
+        <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ password_errors['confirmPassword'] }}</b> <br> 
         {{ changePasswordForm.submit2(class='change-details-submit') }}
     </form>
 </div>

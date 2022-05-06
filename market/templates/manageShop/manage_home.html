@@ -5,14 +5,14 @@
 {% block body %}
     <div class = 'products-section'>
         {% for product in products %}
-            <div class="products-details">
+            <a href="{{ url_for('specific_product_page', product_code=product.productCode) }}" class="products-details">
                 {% set initial_dir = '../../static/products/' + product.displayPic %}
                 <div><img class='product-display-pic' src={{ initial_dir }}></div>
                 <div >
                     <p><i>Title</i> {{ product.title }}</p>
                     <p><i>Price</i> {{ product.price }}</p>
                 </div>
-            </div>
+            </a>
         {%endfor%}       
     </div>
 {% endblock %}

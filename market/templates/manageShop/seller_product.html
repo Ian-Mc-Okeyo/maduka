@@ -1,0 +1,52 @@
+{% extends 'manageShop/manage_base.html' %}
+{% block title %}
+    {{ product.title }}
+{% endblock %}
+{% block body %}
+    <div style="display: flex; flex-direction: column; height: 100%; align-items: center;">
+        <div id="product-page">
+            <div id="regular-details-section">
+                <div>
+                    {% set dp_dir = '../../static/products/' + product.displayPic %}
+                    <img src={{  dp_dir }} id="display-pic">
+                </div>
+                <div id="regular-details">
+                    <div><i>Title: </i>{{ product.title }}</div><br>
+                    <div><i>Price: </i>{{ product.price }}</div><br>
+                    <div><i>Stock: </i>{{ product.stock }}</div><br>
+                    <div><a id="product-update-details-button">Update Details</a></div>
+                </div>
+            </div>
+            <div id="product-description">
+                {{ product.description }}
+            </div>
+            <div id="extra-pics-section">
+                {% set init_dir = '../../static/products/' %}
+                <div>
+                    {% if product.pic1!=none %}
+                        {% set dir = init_dir+product.pic1 %}
+                        <img src={{ dir }} id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic2!=none %}
+                        {% set dir = init_dir+product.pic2 %}
+                        <img src={{ dir }} id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic3!=none %}
+                        {% set dir = init_dir+product.pic3 %}
+                        <img src={{ dir }} id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic4!=none %}
+                        {% set dir = init_dir+product.pic4 %}
+                        <img src={{ dir }} id="display-pic">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

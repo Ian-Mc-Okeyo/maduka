@@ -70,7 +70,7 @@ class OpenShop(FlaskForm):
     shopName = StringField(label='Shop Name', validators=[Length(min=3, max=30), DataRequired()])
     password = PasswordField(label="Password", validators=[Length(min=8), DataRequired()])
 
-    submit = SubmitField(label='Create Shop')
+    submit = SubmitField(label='Open Shop')
 
 class addProductForm(FlaskForm):
     title = StringField(label='Title', validators=[DataRequired()])
@@ -78,7 +78,7 @@ class addProductForm(FlaskForm):
     stock = IntegerField(label='Stock', validators=[DataRequired()])
     description = TextAreaField(label='Description')
     displayPic = FileField(label='Upload a display Picture', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
-    extraPics = MultipleFileField(label='Upload a display Picture', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+    extraPics = MultipleFileField(label='Upload addtional Pictures', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
 
     submit = SubmitField(label='Submit')
 
@@ -113,7 +113,8 @@ class ShopDetailsForm(FlaskForm):
                 raise ValidationError('The User name already exists')
 
     def validate_shopName(self, shopName):
-        current_shop = Shop.query.filter_by(ownerName=current_user.userName).first()
+        owner = Owner.query.filter_by(user_id=current_user.id).first()
+        current_shop = Shop.query.filter_by(owner_id=owner.id).first()
         if current_shop.shopName != shopName.data:
             check_shop = Shop.query.filter_by(shopName=shopName.data).first()
             if check_shop:
@@ -143,16 +144,12 @@ class ShopDetailsForm(FlaskForm):
     submit1 = SubmitField(label='SAVE CHANGES')
 
 class ChangePasswordForm(FlaskForm):
-    #validationschanchanchan
+    #validations
     def validate_oldPassword(self, oldPassword):
         if not current_user.check_password_correction(attempted_password=oldPassword.data):
             raise ValidationError('Wrong Password')
-    
-    def validate_confirmPassword(self, confirmPassword):
-        if not self.newPassword.data == confirmPassword.data:
-            raise ValidationError('This field must match the new password')
 
     oldPassword = PasswordField(label='Current password', validators=[DataRequired()])
     newPassword = PasswordField(label='New Password', validators=[Length(min=8), DataRequired()])
-    confirmPassword = PasswordField(label='Confirm password', validators=[DataRequired(), EqualTo(newPassword)])
+    confirmPassword = PasswordField(label='Confirm password', validators=[Length(min=8), DataRequired(), EqualTo('newPassword')])
     submit2=SubmitField(label='SUBMIT')
