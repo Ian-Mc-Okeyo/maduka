@@ -1,0 +1,49 @@
+{% extends 'manageShop/manage_base.html' %}
+{% block title %}
+    Add Product
+{% endblock %}
+{% block body %}
+    <div id="add-product-section">
+        <form method='POST' enctype="multipart/form-data" class="form-area">
+            {{ form.hidden_tag() }}
+            <div>
+                <h2 style="margin: 2px;">Add A new Product</h2>
+            </div>
+            <div>
+                {{ form.title(class='add-product-forms', placeholder='Title')}}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['title'] }}</div>
+
+            <div>
+                {{ form.price(class='price-stock-input', placeholder='Price per unit')}} {{ form.stock(class='price-stock-input', placeholder='Number of Items')}}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['price'] }}</div>
+
+            <div>
+                {{ form.description(class='text-area', placeholder='More details about the product')}}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['description'] }}</div>
+
+            <div>
+                {{ form.displayPic.label(class='add-product-labels') }}
+            </div>
+
+            <div>
+               {{ form.displayPic(class='uploadFile') }}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['displayPic'] }}</div>
+
+            <div>
+                {{ form.extraPics.label(class='add-product-labels') }}
+            </div>
+            <div >
+                {{ form.extraPics(class='uploadFile') }}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['extraPics'] }}</div>
+
+            <div>
+                {{ form.submit(class='add-product-submit') }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

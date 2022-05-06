@@ -1,0 +1,51 @@
+{% extends 'market_base.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block body %}
+ <div id='details-page-layout'>
+     <div id='details-section-layout'>
+        <form method="POST">
+         {{ detailsForm.hidden_tag() }}
+            <div style="margin-bottom: 50px;">
+               {{ detailsForm.userName.label(id='details-label') }} <br>
+               {{ detailsForm.userName(id='details-form', value=current_user.userName) }}
+            </div>
+            <div style="margin-bottom: 50px;">
+               {{ detailsForm.email.label(id='details-label') }}  <br>
+               {{ detailsForm.email(id='details-form', value=current_user.email) }}
+            </div>
+            <div style="margin-bottom: 50px;">
+               {{ detailsForm.phoneNo.label(id='details-label') }}  <br>
+               {{ detailsForm.phoneNo(id='details-form', value=current_user.phoneNo) }}
+            </div>
+            <div> 
+               {{ detailsForm.submit1(id='details-submit') }}
+            </div>
+        </form>
+     </div>
+     <div id='details-section-layout'>
+        <form method="POST">
+           {{ changePasswordForm.hidden_tag() }}
+            <div style="margin-bottom: 50px;">
+               {{ changePasswordForm.oldPassword.label(id='details-label') }} <br>               
+               {{ changePasswordForm.oldPassword(id='details-form') }} <br>
+               <b style="color: red; margin-top: -50px">{{ errors['oldPassword'][0] }}</b>               
+            </div>
+            <div style="margin-bottom: 50px;">
+               {{ changePasswordForm.newPassword.label(id='details-label') }}<br>
+               {{ changePasswordForm.newPassword(id='details-form') }}</br>
+               <b style="color: red;">{{ errors['newPassword'][0] }}
+            </div>
+            <div style="margin-bottom: 50px;">
+               {{ changePasswordForm.confirmPassword.label(id='details-label') }}<br>
+               {{ changePasswordForm.confirmPassword(id='details-form') }}</br>
+               <b style="color: red; margin-top: -50px">{{ errors['confirmPassword'][0] }}
+            </div>
+            <div>
+                  {{ changePasswordForm.submit2(id='details-submit') }}
+            </div>
+        </form>
+     </div>
+ </div>
+{% endblock %}

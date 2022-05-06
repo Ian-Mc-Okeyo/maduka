@@ -3,10 +3,12 @@
     }
     .navContainer-not-authenticated{
         display: grid;
-        grid-template-columns: 20% 60% 10% 10%;
+        grid-template-columns: 30% 35% 10% 10% 15%;
         background: rgba(0, 0, 14, 0.425);
-        margin: -8px;
+        margin: -10px;
         padding: 20px;
+        justify-content: center;
+        align-items: center;
         size: cover;
     }
     .nav-container-authenticated{
@@ -14,12 +16,13 @@
         display:flex;
         flex-direction:row;
         flex-wrap: wrap;
-        margin: -8px;
+        margin: -10px;
         margin-top: 10px;
         padding: 10px;
-        size: cover;
+        width: 100%;
         color: rgb(255, 217, 0);
-        justify-content: space-evenly;
+        justify-content: space-between;
+        align-items: center;
     }
     .nav-container-authenticated a{
         color: rgb(236, 232, 232);
@@ -27,9 +30,19 @@
         font-size: 1.2em;
     }
     .navContainer-not-authenticated a{
-        color: rgb(236, 232, 232);
+        color: rgb(255, 217, 0);
         text-decoration: none;
         font-size: 1.2em;
+    }
+    .navContainer-not-authenticated a:hover{
+        color: rgb(236, 232, 232);
+    }
+    .create-shop-link{
+        background-color: blue;
+        padding: 3px 7px;
+        border-radius: 5px;
+        margin-right: 5px;
+        font-weight: 800;
     }
     .home-page_container{
         display: flex;
@@ -38,7 +51,7 @@
         align-items: right;
         justify-content: center;
         background-color: black;
-        background-image: url('../static/backgroung.jpg');
+        background-image: url('../backgroung.jpg');
         background-repeat: no-repeat;
         background-position: center;
         padding: 30px 40px;
@@ -108,19 +121,40 @@
         justify-content: center;
         text-align: center;
         margin: 60px -8px;
+        margin-top: 20px;
         background:rgba(0, 0, 14, 0.425);
         padding: 20px;
     }
+    #register-shop-page{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        margin: 60px -8px;
+        margin-top: 20px;
+        background:rgba(0, 0, 14, 0.425);
+        padding: 20px;
+    }
+    .authenticationTitle{
+        color: whitesmoke; 
+        text-align: center; 
+        font-size: 2em; 
+        font-family:Arial, Helvetica, sans-serif;
+        word-spacing: 7px;
+    }
     .labels{
         color: rgb(255, 217, 0);
-        font-size: 1.5em;
-        font-family: sans-serif;
+        font-size: 1.3em;
+        font-family:Arial, Helvetica, sans-serif;
+        margin-bottom: 0px;
     }
     .forms{
         width:500px;
         border-radius: 7px;
         padding: 8px;
         margin: 10px;
+        border: none;
     }
     .register-submit{
         background-color: rgb(255, 217, 0);
@@ -128,7 +162,24 @@
         border-radius: 7px;
         padding: 8px;
         margin: 10px;
+        border: none;
+        transition: 0.5s;
     }
+    input[type=file]::file-selector-button {
+        border: none;
+        background-color: whitesmoke;
+        width: 350px;
+        border-radius: 7px;
+        padding: 8px;
+        margin: 10px;
+        transition: 0.5s;
+      }
+      input[type=file]::file-selector-button:hover {
+        background-color: rgba(19, 19, 228, 0.425);
+        padding-top:5px;
+        font-size: 1.1em;
+        color: white;
+      }
     .register-submit:hover{
         background-color: rgba(19, 19, 228, 0.425);
         padding-top:5px;
@@ -160,7 +211,7 @@
 /* Links inside the dropdown */
     .dropdown-content a {
         color: black;
-        padding: 12px 16px;
+        padding: 5px 6px;
         text-decoration: none;
         display: block;
     }
@@ -187,9 +238,10 @@
         font-weight: 900;
         border: none;  
         border-radius: 5px; 
-        width: 500px;
+        width: 450px;
         height: 40px;
         text-align: center;
+        margin-top: 5px;
     }
     .market-home-page{
         display: flex;
@@ -259,7 +311,7 @@
     #product-page{
         display:flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         background-color: whitesmoke;
         margin:30px;
         padding: 10px;
@@ -269,14 +321,16 @@
         background-color: rgba(0, 0, 14, 0.733);
         color: rgb(255, 217, 0);
         padding: 10px;
+        min-width: 300px;
     }
 
-    #product-page-img{
+    .product-page-img{
         height: 470px;
+        width: 330px;
         border-radius: 10px;
         transition: all 0.8s ease-in-out 0.1s;
     }
-    #product-page-img:hover{
+    .product-page-img:hover{
         transform: scale(1.1);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.651);
     }
@@ -294,14 +348,14 @@
         font-size: 1.1em;
         text-align: justify;
     }
-    #actions-on-product{
+    .actions-on-product{
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-evenly;
         margin: 30px;
     }
-    #actions-on-product-submit{
+    .actions-on-product-submit{
         color: black;
         border: none;
         font-weight: 900;
@@ -313,7 +367,7 @@
         margin: 10px;
         transition: all 0.5s ease-in-out 0.1s;
     }
-    #actions-on-product-submit:hover{
+    .actions-on-product-submit:hover{
         color:rgb(251, 255, 0);
         background-color: rgba(0, 0, 14, 0.733);
         transform: scale(1.05);
@@ -327,7 +381,7 @@
         flex-wrap: wrap;
         border-radius: 10px;
         background-color: rgba(0, 0, 14, 0.733);
-        justify-content: space-evenly;
+        justify-content:space-around;
         margin: 30px;
         padding: 10px;
     }
@@ -365,11 +419,97 @@
         border: none;
         font-weight: 900;
         font-family: sans-serif;
+        font-size: 1.2em;
         border-radius: 5px;
         text-decoration: none;
         background-color: rgb(251, 255, 0);
         padding: 7px 40px;
+        margin: 30px;
+    }
+
+    /*css for the details page*/
+    #details-page-layout{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 20px;
+        padding: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    #details-section-layout{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: whitesmoke;
+        padding: 30px;
+        padding-bottom: 10px;
+        margin: 3px;
+    }
+    #details-label{
+        color: black;
+        font-weight: 800;
+        font-size: 1.3em;
+        font-family: sans-serif;
+        margin-top: 30px;
+    }
+    #details-form{
+        width: 500px;
+        padding-bottom: 0px;
+        margin-top: 10px;
+        font-size: 1.1em;
+        border: none;
+        border-bottom: solid;
+        border-width: 2px;
+        background-color: whitesmoke;
+        outline: none;
+    }
+    #details-submit{
+        background-color:rgb(251, 255, 0);
+        color: black;
+        font-weight: 900;
+        border: none;
+        height: 40px;
+        width:500px;
+        border-radius: 7px;
+        padding: 8px;
         margin: 10px;
+    }
+    /*order page css*/
+    .order-page-layout{
+        display: flex;
+        flex-direction: column;
+        margin:0px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 14, 0.733);
+        justify-content:center;
+        margin: 15px;
+        padding: 10px;
+    }
+    .order-product{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 10px;
+        background-color: whitesmoke;
+        justify-content: space-evenly;
+        margin: 30px;
+        padding: 10px;
+    }
+    .order-details{
+        display:flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        margin: 10px;
+        width: 500px;
+    }
+    .order-details-content{
+        font-family: sans-serif;
+        font-weight: 800;
+        word-spacing: 10px;
+        font-size: 1.1em;
+        text-align: justify;
     }
 
     /*css for the flash messages */

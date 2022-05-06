@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}
+    OpenShop
+{% endblock %}
+{% block body %}
+<h2 class="authenticationTitle">Login To Manage Your Shop</h2>
+    <div id="register-page">
+        <form method='POST'>
+            {{ form.hidden_tag() }}
+            <div style="order: 1">
+                {{ form.ownerName.label(class='labels') }}
+            </div>
+            <div style="order: 2">
+                {{ form.ownerName(class='forms', placeholder='Enter your User name') }}
+            </div>
+            <div style="order: 3">
+                {{ form.shopName.label(class='labels') }}
+            </div>
+            <div style="order: 4">
+                {{ form.shopName(class='forms', placeholder='Shop Name') }}
+            </div>
+            <div style="order: 5">
+                {{ form.password.label(class='labels') }}
+            </div>
+            <div style="order: 6">
+                {{ form.password(class='forms', placeholder='Enter your password') }}
+            </div>
+            <div style="order: 7">
+                {{ form.submit(class='register-submit') }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

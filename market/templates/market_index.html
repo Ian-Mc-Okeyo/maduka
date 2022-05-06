@@ -29,7 +29,7 @@
             {% for stationery in products['stationery'] %}
                 <a href="{{ url_for('product_page', product_code = stationery.code, cart_code='none') }}" class="product-card">
                         <div style="order: 1">
-                            <img src="static/{{ stationery.code }}.png" class="product-img">
+                            <img src="{{ url_for('static', filename=stationery.code) }}.png" class="product-img">
                         </div>
                         <div style="order: 2">
                             <p style="font-weight: 900;">{{ stationery.title }} <br> Price: Ksh {{ stationery.price }}</p>

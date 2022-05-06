@@ -1,0 +1,18 @@
+{% extends 'manageShop/manage_base.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block body %}
+    <div class = 'products-section'>
+        {% for product in products %}
+            <div class="products-details">
+                {% set initial_dir = '../../static/products/' + product.displayPic %}
+                <div><img class='product-display-pic' src={{ initial_dir }}></div>
+                <div >
+                    <p><i>Title</i> {{ product.title }}</p>
+                    <p><i>Price</i> {{ product.price }}</p>
+                </div>
+            </div>
+        {%endfor%}       
+    </div>
+{% endblock %}

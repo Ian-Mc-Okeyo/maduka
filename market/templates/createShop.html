@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}
+    registerShop
+{% endblock %}
+
+{% block body %}
+<h2 class="authenticationTitle">Create Your Online Shop</h2>
+<div id="register-page">
+    <form method='POST' enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div style="order: 2">
+            {{ form.userName(class='forms', placeholder='Enter your User name') }}
+        </div>
+        <div style="color: red;">{{ errors['ownerName'] }}</div>
+
+        <div style="order: 4">
+            {{ form.shopName(class='forms', placeholder='Give Your shop a name') }}
+        </div>
+        <div style=" color: red;">{{ errors['shopName'] }}</div>
+
+        <div style="order: 6">
+            {{ form.country(class='forms', placeholder='Country') }}
+        </div>
+
+        <div style="order: 8">
+            {{ form.town(class='forms', placeholder='Nearest town') }}
+        </div>
+
+        <div style="order: 8">
+            {{ form.category(class='forms', placeholder='Type of products in your shop') }}
+        </div>
+
+        <div style="order: 9">
+            {{ form.password(class='forms', placeholder='Your user name Password') }}
+        </div>
+        <div style=" color: red;">{{ errors['password'] }}</div>
+        <div style="order: 11"> {{ form.uploadPic(class='uploadFile') }}</div>
+        <div style=" color: rgb(245, 114, 114);">{{ errors['uploadPic'] }}</div>
+        <div style="order: 10">
+           {{ form.submit(class='register-submit') }}
+        </div>
+    </form>
+</div>
+{% endblock %}

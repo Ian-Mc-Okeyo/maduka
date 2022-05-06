@@ -1,0 +1,136 @@
+{% extends 'market_base.html' %}
+{% block title %}
+    {{ product.title }}
+{% endblock %}
+{% block body %}
+    <div id='product-page'>
+        <div style="order: 1">
+            <img src="{{ url_for('static', filename=product.code+'.png' ) }}" class='product-page-img'>
+        </div>
+        <div style="order: 2" id='description'>
+            <div style="order: 1">
+                <h1 id="product-title">{{ product.title }}</h1>
+            </div>
+            <div style="order: 2" id='description-content'>
+                <p>
+                    {{ product.description }}
+                </p>
+            </div>
+            <div style="order: 2" id='description-content'>
+                <i style="font-size: 1.15em;">Author: </i>{{ product.author }}
+            </div>
+            <div style="order: 3" id='description-content'>
+                <br>
+                <i style="font-size: 1.15em;">Stock: </i>{{ product.numberOfItems }}
+            </div>
+            <div style="order: 4" id='description-content'>
+                <br>
+                <i style="font-size: 1.15em;">Price: </i>@Ksh {{ product.price }}
+            </div>
+        </div>
+        <div class="actions-on-product" style="order: 3">
+            <div style="order: 1">
+                    <a href="{{ url_for('product_page', product_code=product.code, cart_code=product.code) }}">
+                        {% if current_user in product.users_interested %}
+                        <button  class="actions-on-product-submit"><b>Removefrom cart</b></button>
+                        {% else %}
+                        <button  class="actions-on-product-submit"><b>Add to cart</b></button>
+                        {% endif %}
+                    </a>            
+            </div>
+            <div style="order: 2">
+                <button  class="actions-on-product-submit" onclick="openForm()"><b>Make an Order</b></button>
+                <div class="form-popup" id="myForm">
+                    <form class="form-container" method="POST">
+                        {{ orderForm.hidden_tag() }}
+                      <h1>ORDER DETAILS</h1>
+
+                      {{ orderForm.address.label() }}
+                      {{ orderForm.address(placeholder='Enter address for delivery') }}             
+                      
+                      {{ orderForm.county.label() }}
+                      {{ orderForm.county(placeholder='County for delivery') }}
+                      
+                      {{ orderForm.town.label() }}
+                      {{ orderForm.town(placeholder='Town for delivery') }}
+                      
+                      {{ orderForm.numberOfItems.label() }}
+                      {{ orderForm.numberOfItems(placeholder='Number of items to order', min=1, max=product.numberOfItems) }}
+                  
+                      {{ orderForm.submit2(class='btn') }}
+                      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>       
+        
+        /* The popup form - hidden by default */
+        .form-popup {
+          display: none;
+          position:fixed;
+          top: 40px;
+          right: 15px;
+          border: 3px solid #f1f1f1;
+          z-index: 9;
+        }
+        
+        /* Add styles to the form container */
+        .form-container {
+          max-width: 400px;
+          padding: 10px;
+          background-color: white;
+        }
+        
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container input[type=password], .form-container input[type=number] {
+          width: 100%;
+          padding: 15px;
+          margin: 5px 0 22px 0;
+          border: none;
+          background: #f1f1f1;
+        }
+        
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+          background-color: #ddd;
+          outline: none;
+        }
+        
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+          background-color: rgb(255, 217, 0);
+          color: black;
+          font-weight: 900;
+          padding: 16px 20px;
+          border: none;
+          cursor: pointer;
+          width: 100%;
+          margin-bottom:10px;
+          opacity: 0.8;
+        }
+        
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+          background-color: red;
+        }
+        
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover{
+          opacity: 1;
+        }
+    </style>
+    <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+        
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+{% endblock %}
+</html>

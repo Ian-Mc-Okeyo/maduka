@@ -14,27 +14,31 @@
                 <div style="order: 2">
                     <a href="{{ url_for('market_page') }}"><h1>SCHOOL MARKET</h1></a>
                 </div>
-                <div style="order: 3">
-                    <img src="static/logo.png" style="width: 50px; border-top-left-radius: 21px; border-top-right-radius: 21px;">
-                </div>
-                <div style="order: 4; margin-top: 10px">
-                    <form method='POST'>
-                        {{ searchForm.hidden_tag() }}
-                        {{ searchForm.productName(id='search-bar', placeholder='Search for a product') }}
-                        {{ searchForm.submit(id='search-button') }}
-                    </form>
-                </div>
-                <div style="order: 5">
+                
+                {% if self._TemplateReference__context.name=='details.html' %}
+                    <div style="order: 4; ">
+                        <h2>Personal Details</h2>
+                    </div>
+                {% elif self._TemplateReference__context.name=='orders.html' %}
+                    <div style="order: 4;">
+                        <h2>My Orders</h2>
+                    </div>
+                
+                {% endif %}
+                <div style="order: 5; right: 20%">
                     <div class="dropdown">
-                        <h2 class="dropbtn">My Account</h2>
+                        <h3 class="dropbtn" >My Account</h3>
                         <div class="dropdown-content">
-                            <a href="#">My Details</a>
+                            <a href="{{ url_for('details_page') }}">My Details</a>
                             <a href="{{ url_for('cart_page', cart_code='none') }}">Cart</a>
-                            <a href="#">My Orders</a>
+                            <a href="{{ url_for('order_page', order_code_to_cancel='none', product_code_to_cancel='none') }}">My Orders</a>
                             <hr>
                             <a href="{{ url_for('logout_page') }}">Logout</a>
                         </div>
                     </div>
+                </div>
+                <div style="order: 6" class="create-shop-link">
+                    <a href="{{ url_for('create_shop') }}">Create Shop</a>
                 </div>
             </nav>
         {% for messages in get_flashed_messages(category_filter=['success']) %}

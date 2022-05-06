@@ -1,0 +1,368 @@
+body{
+    background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );
+    color: #270942;
+    text-align: center;
+    overflow-x: hidden;
+}
+.header{
+    background: linear-gradient(164deg, rgba(123,134,232,1) , rgba(246,140,255,1) , rgba(255,222,50,1) );
+    color: #270942;
+    margin: -10px -10px 0px -10px;
+    height: 180px;
+    padding: 10px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.flip-card {
+  background: transparent;
+  width: 20%;
+  height: 30%;
+  max-height: 180px;
+  min-height: 180px;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  position: absolute;
+  top: 5px;
+  min-width: 170px;
+  min-height: 170px;
+  float: right;
+}
+/*flip card*/
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card:hover .flip-card-inner {
+  transform: rotateX(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  min-width: 170px;
+  min-height: 170px;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  background: radial-gradient(rgb(197, 195, 195), rgba(47, 47, 238, 0.397));
+  box-shadow: 0 10px 10px 0 rgb(94, 92, 92);
+  border-radius: 5px;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  padding-top: 10px;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  font-weight: 800;
+  font-size: 1.3em;
+  transform: rotateX(180deg);
+}
+#logo{
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+}
+#navbar{
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(164deg, rgba(246,140,255,1) 0%, rgba(255,222,50,1) 52%, rgba(123,134,232,1) 100%);
+    size: cover;
+    margin: -10px;
+    margin-top: 0px;
+    padding: 10px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    position: sticky;
+    
+}
+#navbar a{
+    text-decoration: none;
+    color: #270942;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0px 10px;
+}
+#navbar a:hover{
+    color: white
+}
+.open-menu-button{
+    border: none;
+    background-color: rgba(0, 0, 0, 0.493);
+    color: rgb(255, 217, 0);
+    padding: 1% 10%;
+    font-size: 1.5em;
+    border-radius: 5px;
+}
+/* The Overlay (background) */
+.overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100%;
+    width: 0;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/opacity */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.3s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+  }
+  
+  /* Position the content inside the overlay */
+  .overlay-content {
+    position: relative;
+
+    top: 25%; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+  }
+  
+  /* The navigation links inside the overlay */
+  .overlay a {
+    padding: 8px;
+    text-decoration: none;
+    font-size: 36px;
+    color: #78d8f5cb;
+    display: block; /* Display block instead of inline */
+    transition: 0.3s; /* Transition effects on hover (color) */
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .overlay a:hover, .overlay a:focus {
+    color: #f1f1f1;
+  }
+  
+  /* Position the close button (top right corner) */
+  .overlay .closebtn {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+  }
+  
+  /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
+  @media screen and (max-height: 450px) {
+    .overlay a {font-size: 20px}
+    .overlay .closebtn {
+      font-size: 40px;
+      top: 15px;
+      right: 35px;
+    }
+  }
+  .products-details{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: space-around;
+      background-color: #ffffff4d;
+      margin: 0.2%;
+      width: 20%;
+      min-width: 250px;
+      max-width: 250px;
+      min-height: 340px;
+      max-height: 340px;
+      border-radius: 5px;
+  }
+  .products-section{
+      display: flex;
+      margin: 20px -7px 0px -7px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      overflow-x: scroll;
+      
+  }
+  .sub-details{
+      display: flex;
+      flex-direction: column;
+      
+  }
+  .product-display-pic{
+      height:100%;
+      margin-bottom: -10px;
+  }
+  .alert {
+    padding: 15px;
+    background-color: rgb(6, 173, 0); /* Red */
+    color: #000000;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+#add-product-section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  left: 20%;
+}
+.form-area{
+  background-color: #ffffff4d;
+  box-shadow: 0px 3px 3px 0px rgb(94, 92, 92);
+  margin-top: 20px;
+  border-radius: 3px;
+  height: 100%;
+  margin: 20px;
+}
+.text-area{
+  width:90%;
+  border-radius: 7px;
+  border: none;
+  height: 140px;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05em;
+  margin-bottom: 10px;
+  background-color: #ffffff8c;
+}
+.add-product-forms{
+  width:91%;
+  padding: 8px;
+  margin: 10px;
+  border: none;
+  height: 20px;
+  background-color: #ffffff8c;
+}
+.price-stock-input{
+  width: 41%;
+  padding: 8px;
+  margin: 10px;
+  border: none;
+  height: 20px;
+  background-color: #ffffff8c;
+}
+input[type=file]::file-selector-button {
+  border: none;
+  background-color: #ffffff8c;
+  width: 50%;
+  border-radius: 0px;
+  padding: 8px;
+  margin: 10px;
+  margin-bottom: 20px;
+}
+input[type=file]::file-selector-button:hover {
+  background-color: rgb(187, 184, 184);
+  color: white
+}
+.add-product-submit{
+  background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );
+  padding: 10px 10px;
+  width: 95%;
+  margin: 10px;
+  border: none;
+  transition: 0.3s linear;
+  border-radius: 3px;
+  float: left;
+  transition: all 3s;
+}
+.add-product-submit:hover{
+  background: linear-gradient(164deg, rgba(246,140,255,1) 0%, rgba(255,222,50,1) 52%, rgba(123,134,232,1) 100%);
+}
+.add-product-labels{
+  color: #410672;
+  font-weight: 700;
+  font-size: 100%;
+}
+/*css for the details page*/
+#change-details-section{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  left: 20%;
+}
+.form-area{
+  background-color: #ffffff4d;
+  box-shadow: 0px 3px 3px 0px rgb(94, 92, 92);
+  margin-top: 20px;
+  border-radius: 3px;
+  height: 100%;
+  margin: 20px;
+}
+.change-details-forms{
+  width:70%;
+  padding: 8px;
+  margin: 10px;
+  border: none;
+  height: 20px;
+  background-color: #ffffff8c;
+}
+.sub-change-details-form{
+  width:31.5%;
+  padding: 8px;
+  margin: 10px;
+  border: none;
+  height: 20px;
+  background-color: #ffffff8c;
+}
+.sub-details-label-section{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width:100%;
+  float: right;
+}
+.change-details-submit{
+  background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );
+  padding: 10px 10px;
+  width: 74%;
+  margin: 10px;
+  border: none;
+  transition: 0.3s linear;
+  border-radius: 3px;
+  transition: all 3s;
+}
+.change-details-submit:hover{
+  background: linear-gradient(164deg, rgba(246,140,255,1) 0%, rgba(255,222,50,1) 52%, rgba(123,134,232,1) 100%);
+}
+#details-label{
+  color: #270942;
+  font-weight: 800;
+  font-size: 100%;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+
+

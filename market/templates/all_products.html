@@ -5,13 +5,13 @@
 {% block body %}
 <div class="market-home-page">
     <div class="category-nav">
-        <div><h1>Books</h1></div>
+        <div><h1>{{ product_category }}</h1></div>
     </div>
     <div class="products-category">
         {% for product in products %}
             <a href="{{ url_for('product_page', product_code = product.code, cart_code='none') }}" class="product-card">
                     <div style="order: 1">
-                        <img src="static/{{ product.code }}.png" class="product-img">
+                        <img src="{{ url_for('static', filename=product.code+'.png') }}" class="product-img">
                     </div>
                     <div style="order: 2">
                         <p style="font-weight: 900;">{{ product.title }} <br> Price: Ksh {{ product.price }}</p>

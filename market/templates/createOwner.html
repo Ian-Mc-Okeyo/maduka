@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}
+    registerOwner
+{% endblock %}
+
+{% block body %}
+<h2 class="authenticationTitle">Be an Online Shop Owner</h2>
+<div id="register-page">
+    <form method='POST' enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div style="order: 1">
+            {{ form.userName.label(class='labels') }}
+        </div>
+        <div style="order: 2">
+            {{ form.userName(class='forms', placeholder='Enter your User name') }}
+        </div>
+        <div style="color: red;">{{ errors['ownerName'] }}</div>
+        <div style="order: 3">
+            {{ form.email.label(class='labels') }}
+        </div>
+        <div style="order: 4">
+            {{ form.email(class='forms', placeholder='Enter a valid Email Address') }}
+        </div>
+        <div style=" color: red;">{{ errors['email'] }}</div>
+        <div style="order: 5">
+            {{ form.phoneNo.label(class='labels') }}
+        </div>
+        <div style="order: 6">
+            {{ form.phoneNo(class='forms', placeholder='Enter youe phone Number') }}
+        </div>
+        <div style="color: red;">{{ errors['phoneNo'] }}</div>
+        <div style="order: 7">
+            {{ form.password.label(class='labels') }}
+        </div>
+        <div style="order: 8">
+            {{ form.password(class='forms', placeholder='Enter a strong password') }}
+        </div>
+        <div style="order: 9">
+            {{ form.confirmPassword(class='forms', placeholder='Confirm Password') }}
+        </div>
+        <div style=" color: red;">{{ errors['confirmPassword'] }}</div>
+        
+        <div style="order: 12">
+           {{ form.submit(class='register-submit') }}
+        </div>
+    </form>
+</div>
+{% endblock %}
