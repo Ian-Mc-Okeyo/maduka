@@ -1,0 +1,55 @@
+{% extends 'manageShop/manage_base.html' %}
+{% block title %}
+    Add Product
+{% endblock %}
+
+{% block body %}
+    <div id="add-product-section">
+        <form method='POST' enctype="multipart/form-data" class="form-area">
+            {{ form.hidden_tag() }}
+            <div>
+                <h2 style="margin: 2px;">Update Product</h2>
+            </div>
+            
+            <div>
+                {{ form.title.label() }} <br> {{ form.title(class='add-product-forms', placeholder='Title', value=product.title)}}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['title'] }}</div>
+
+            <div>
+                {{ form.price.label() }}<br> {{ form.price(class='price-stock-input', placeholder='Price per unit', value=product.price)}} <br> {{ form.stock.label() }}<br> {{ form.stock(class='price-stock-input', placeholder='Number of Items', value=product.stock)}}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['price'] }}</div>
+
+            <div>
+                {{ form.description.label() }} <br> {{ form.description(id='product-text-area', placeholder='More details about the product')}}
+               
+                <script>    
+                    document.getElementById("product-text-area").defaultValue =  '{{ product.description }}' ;
+                </script>
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['description'] }}</div>
+
+            <div>
+                {{ form.displayPic.label(class='add-product-labels') }}
+            </div>
+
+            <div>
+               {{ form.displayPic(class='uploadFile') }}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['displayPic'] }}</div>
+
+            <div>
+                {{ form.extraPics.label(class='add-product-labels') }}
+            </div>
+            <div >
+                {{ form.extraPics(class='uploadFile') }}
+            </div>
+            <div style=" color: rgb(245, 114, 114);">{{ errors['extraPics'] }}</div>
+
+            <div>
+                {{ form.submit(class='add-product-submit') }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

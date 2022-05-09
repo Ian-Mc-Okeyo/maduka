@@ -143,6 +143,16 @@ class ShopDetailsForm(FlaskForm):
     displayPic = FileField(label='Change display Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit1 = SubmitField(label='SAVE CHANGES')
 
+class upateProductDetails(FlaskForm):
+    title = StringField(label='Title', validators=[DataRequired()])
+    price = FloatField(label='Price', validators=[DataRequired()])
+    stock = IntegerField(label='Stock', validators=[DataRequired()])
+    description = TextAreaField(label='Description')
+    displayPic = FileField(label='Change display Picture', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
+    extraPics = MultipleFileField(label='Change extra Pictures', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+
+    submit = SubmitField(label='Submit')
+
 class ChangePasswordForm(FlaskForm):
     #validations
     def validate_oldPassword(self, oldPassword):

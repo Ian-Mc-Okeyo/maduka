@@ -8,6 +8,7 @@
     function closeNav() {
         document.getElementById("myNav").style.width = "0%";
     }
-    
+
+    //document.getElementById("product-text-area").defaultValue = "Fifth Avenue, New York City";
     
 }

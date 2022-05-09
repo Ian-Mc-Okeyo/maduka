@@ -250,6 +250,22 @@ def specific_product_page(product_code):
                     shopCategory=current_shop.category, shopName = current_shop.shopName)
 
 
+@app.route('/manageShop/update_product/<product_code>', methods=['POST', 'GET'])
+def update_product_details(product_code):
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    if not current_shop:#to redirect users who have no shops to the create shop url
+        return redirect(url_for('open_shop'))
+    
+    form = upateProductDetails()
+    errors = form.errors
+    product = Product.query.filter_by(productCode=product_code).first()
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
+    return render_template('manageShop/product_update.html', product=product, profile_pic=profile_pic_fn, form=form, errors=errors,
+                    shopCategory=current_shop.category, shopName = current_shop.shopName, description=product.description)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form=LoginForm()

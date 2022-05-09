@@ -5,12 +5,13 @@ body{
     overflow-x: hidden;
 }
 .header{
-    background: linear-gradient(164deg, rgba(123,134,232,1) , rgba(246,140,255,1) , rgba(255,222,50,1) );
+    background: transparent;
     color: #270942;
-    margin: -10px -10px 0px -10px;
+    margin: -10px -3px 0px -1px;
     height: 180px;
     padding: 10px;
     width: 100%;
+    max-width: 100%;
     overflow-x: hidden;
 }
 
@@ -77,15 +78,16 @@ body{
     display: flex;
     flex-direction: row;
     background: linear-gradient(164deg, rgba(246,140,255,1) 0%, rgba(255,222,50,1) 52%, rgba(123,134,232,1) 100%);
-    size: cover;
-    margin: -10px;
+    margin: -10px -1px 0px -6px;
     margin-top: 0px;
     padding: 10px;
     width: 100%;
+    max-width: 100%;
     justify-content: space-between;
     align-items: center;
     top: 0;
     position: sticky;
+    overflow-x: hidden;
     
 }
 #navbar a{
@@ -238,7 +240,10 @@ body{
   margin-top: 20px;
   border-radius: 3px;
   height: 100%;
+  width: 40%;
+  min-width: 280px;
   margin: 20px;
+  padding: 10px;
 }
 .text-area{
   width:90%;
@@ -414,6 +419,7 @@ input[type=file]::file-selector-button:hover {
   padding: 5px 15px; 
   margin: 0px 15px;
   border-radius: 2px;
+  text-decoration: none;
 }
 #product-update-details-button:hover{
   background: linear-gradient(164deg, rgba(246,140,255,1) 0%, rgba(255,222,50,1) 52%, rgba(123,134,232,1) 100%);
@@ -427,6 +433,19 @@ input[type=file]::file-selector-button:hover {
   background-color: white;
   margin-top: 10px;
   padding: 10px;
+}
+#product-text-area{
+  width:90%;
+  border-radius: 7px;
+  border: none;
+  height: 140px;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05em;
+  margin-bottom: 10px;
+  background-color: #ffffff8c;
 }
 
 

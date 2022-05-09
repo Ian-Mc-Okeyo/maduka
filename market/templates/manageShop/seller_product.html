@@ -14,7 +14,7 @@
                     <div><i>Title: </i>{{ product.title }}</div><br>
                     <div><i>Price: </i>{{ product.price }}</div><br>
                     <div><i>Stock: </i>{{ product.stock }}</div><br>
-                    <div><a id="product-update-details-button">Update Details</a></div>
+                    <div><a id="product-update-details-button" href="{{ url_for('update_product_details', product_code=product.productCode) }}">Update Details</a></div>
                 </div>
             </div>
             <div id="product-description">
