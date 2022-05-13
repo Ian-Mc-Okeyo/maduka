@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/manageShop.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type= "text/javascript" src="{{ url_for('static',filename='scripts/manageShop.js') }}"></script>
+        <title>
+            Search Shop
+        </title>
+    </head>
+    <body style='background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1));' class="search-page-body">
+        <h1>Welcome to Maduka.com</h1>
+        <h2>Find and visit any shop of Your choice</h2>
+        <h2>Order any product from the shop of your choice</h2>
+        <div id="shops-section">
+            {% set initial_dir = '../../static/profile_pics/'%}
+            {% for shop in shops %}
+                <a class="shop-card" href="{{ url_for('visit_shop', shop_id=shop.id) }}">
+                    <div><img src="{{ initial_dir+shop.profilePic }}" class="shop-card-logo"></div>
+                    <div><h3 style="margin: 0px; color: white">{{ shop.shopName }}</h3></div>
+                    <div><h4 style="margin: 3px; color: white">{{ shop.category }}</h4></div>
+                    <div class="slideshow-container">
+                        {% set dir = '../../static/products/'%}
+                        {% set i = range(0, shop.products | length) | random %}
+                            <div class="mySlides">
+                                <img src="{{ dir+shop.products[i].displayPic }}" class="slide-img">
+                                <div class="text">{{ shop.products[i].title }}</div>
+                            </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </body>
+</html>
+<script>
+    // console.log('The page is working')
+    // let slideIndex = 0;
+    // showSlides();
+    // testSlide();
+
+    // function showSlides() {
+    //     let i;
+    //     let slides = document.getElementsByClassName("mySlides");
+    //     console.log(slides.length)
+    //     for (i = 0; i < slides.length; i++) {
+    //         slides[i].style.display = "none";
+    //     }
+    //     slideIndex++;
+    //     if (slideIndex > slides.length) {slideIndex = 1}
+    //     slides[slideIndex-1].style.display = "block";
+    //     setTimeout(showSlides, 2000); // Change image every 2 seconds
+    // }
+    // function testSlide(){
+    //     let i;
+    //     let slides = document.getElementsByClassName("test-slides");
+    //     console.log(slides.length)
+    //     for (i = 0; i < slides.length; i++) {
+    //         slides[i].style.display = "none";
+    //     }
+    //     slideIndex++;
+    //     if (slideIndex > slides.length) {slideIndex = 1}
+    //     slides[slideIndex-1].style.display = "block";
+    //     setTimeout(testSlide, 2500); // Change image every 2 seconds
+    // };
+
+
+</script>

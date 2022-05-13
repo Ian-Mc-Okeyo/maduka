@@ -1,5 +1,6 @@
 from random import choices
 from tkinter.tix import Select
+from tokenize import String
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms.fields.numeric import IntegerField, FloatField
@@ -78,7 +79,7 @@ class addProductForm(FlaskForm):
     stock = IntegerField(label='Stock', validators=[DataRequired()])
     description = TextAreaField(label='Description')
     displayPic = FileField(label='Upload a display Picture', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
-    extraPics = MultipleFileField(label='Upload addtional Pictures', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+    extraPics = MultipleFileField(label='Upload addtional Pictures', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
 
     submit = SubmitField(label='Submit')
 
@@ -112,14 +113,6 @@ class ShopDetailsForm(FlaskForm):
             if check_user:
                 raise ValidationError('The User name already exists')
 
-    def validate_shopName(self, shopName):
-        owner = Owner.query.filter_by(user_id=current_user.id).first()
-        current_shop = Shop.query.filter_by(owner_id=owner.id).first()
-        if current_shop.shopName != shopName.data:
-            check_shop = Shop.query.filter_by(shopName=shopName.data).first()
-            if check_shop:
-                raise ValidationError('The shop name already exist')
-
     def validate_email(self, email):
         if current_user.email != email.data:
             check_user = User.query.filter_by(email=email.data).first()
@@ -143,13 +136,13 @@ class ShopDetailsForm(FlaskForm):
     displayPic = FileField(label='Change display Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit1 = SubmitField(label='SAVE CHANGES')
 
-class upateProductDetails(FlaskForm):
+class UpdateProductDetails(FlaskForm):
     title = StringField(label='Title', validators=[DataRequired()])
     price = FloatField(label='Price', validators=[DataRequired()])
     stock = IntegerField(label='Stock', validators=[DataRequired()])
     description = TextAreaField(label='Description')
-    displayPic = FileField(label='Change display Picture', validators=[DataRequired(), FileAllowed(['jpg', 'png', 'jpeg'])])
-    extraPics = MultipleFileField(label='Change extra Pictures', validators=[DataRequired(), FileAllowed(['jpg', 'png'])])
+    displayPic = FileField(label='Change display Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    extraPics = MultipleFileField(label='Change extra Pictures', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
 
     submit = SubmitField(label='Submit')
 
@@ -163,3 +156,10 @@ class ChangePasswordForm(FlaskForm):
     newPassword = PasswordField(label='New Password', validators=[Length(min=8), DataRequired()])
     confirmPassword = PasswordField(label='Confirm password', validators=[Length(min=8), DataRequired(), EqualTo('newPassword')])
     submit2=SubmitField(label='SUBMIT')
+
+class MakeShopOrderForm(FlaskForm):
+    address = StringField(label='Address', validators=[DataRequired()])
+    county = StringField(label='County', validators=[DataRequired()])
+    town = StringField(label='Town', validators=[DataRequired()])
+    numberOfItems = IntegerField(label='Number Of Items', validators=[DataRequired()])
+    submit = SubmitField(label='SUBMIT')

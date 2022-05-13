@@ -24,8 +24,23 @@
             <div>
                 {{ form.description.label() }} <br> {{ form.description(id='product-text-area', placeholder='More details about the product')}}
                
-                <script>    
-                    document.getElementById("product-text-area").defaultValue =  '{{ product.description }}' ;
+                <script> 
+                    //let description = "{{ product.description }}".replace(/:/g, '-');
+                    const ele = document.getElementById('product-text-area');
+
+                    ele.addEventListener('keydown', function (e) {
+                        // Get the code of pressed key
+                        const keyCode = e.which || e.keyCode;
+
+                        // 13 represents the Enter key
+                        if (keyCode === 13 && !e.shiftKey) {
+                            // Don't generate a new line
+                            e.preventDefault();
+
+                        }
+                    });
+                    
+                    document.getElementById("product-text-area").defaultValue = '{{ product.description }}';
                 </script>
             </div>
             <div style=" color: rgb(245, 114, 114);">{{ errors['description'] }}</div>

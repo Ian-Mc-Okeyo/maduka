@@ -1,0 +1,27 @@
+{% extends 'visit_shop/visit_shop_base.html' %}
+{% block title %}
+    Make Order
+{% endblock %}
+{% block body %}
+    <div id="make-shop-orders-section">
+        <form class="order-form-area", method="POST">
+            {{ form.hidden_tag() }}
+            <div id="product-dp-section">
+                <img src="{{ product_dp }}" id="order-dp">
+            </div>
+            <div id="order-form">
+                <div><h2>{{ product.title }}</h2></div>
+                <div>{{ form.address.label(class='order-labels')}}</div>
+                <div>{{ form.address() }}</div>
+                <div>{{ form.county.label(class='order-labels') }}</div>
+                <div>{{ form.county() }}</div>
+                <div>{{ form.town.label(class='order-labels') }}</div>
+                <div>{{ form.town() }}</div>
+                <div>{{ form.numberOfItems.label(class='order-labels') }}</div>
+                <div>{{ form.numberOfItems(min=1, max=product.stock) }}</div>
+                <div>{{ form.submit(id='make-order-submit') }}</div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from sqlalchemy import ForeignKey
 from market import db
 from market import bcrypt
 from datetime import datetime
@@ -23,20 +24,15 @@ uniform_cart = db.Table('uniform_cart',
     db.Column('uniform_id', db.Integer, db.ForeignKey('uniform.code'))
     )
 
+product_cart = db.Table('product_cart',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('product_id', db.Integer(), db.ForeignKey('product.productCode'))
+    )
+
 orders = db.Table('orders_cart',
     db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
     db.Column('order_id', db.String(), db.ForeignKey('order.code'))
     )
-
-user_shop_orders=db.Table('user_shop_orders', 
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('order_id', db.String(), db.ForeignKey('shop_order.code'))
-    )
-
-shop_orders=db.Table('shop_orders', 
-    db.Column('shop_id', db.Integer(), db.ForeignKey('shop.id')),
-    db.Column('order_id', db.String(), db.ForeignKey('shop_order.code'))
-)
 
 class User(db.Model, UserMixin): #UserMixin contains additional methods used  during logIn
     id = db.Column(db.Integer(), primary_key=True)
@@ -48,8 +44,9 @@ class User(db.Model, UserMixin): #UserMixin contains additional methods used  du
     stationery_cart = db.relationship('Stationery', secondary=stationery_cart, backref="users_interested")
     lab_cart = db.relationship('Lab', secondary=lab_cart, backref="users_interested")
     uniform_cart = db.relationship('Uniform', secondary=uniform_cart, backref="users_interested")
+    products_cart = db.relationship('Product', secondary=product_cart, backref='users_interested')
     orders = db.relationship('Order', secondary=orders, backref="users_interested")
-    shop_orders = db.relationship('Shop_order', secondary=user_shop_orders, backref="customers")
+    shop_orders = db.relationship('Shop_order', backref="customers", lazy=True)
 
     @property #creating a new property
     def password(self):
@@ -81,12 +78,7 @@ class Shop(db.Model, UserMixin):
     town = db.Column(db.String())
     profilePic = db.Column(db.String())
     products = db.relationship('Product', backref='shop', lazy=True)
-    orders = db.relationship('Shop_order', secondary=shop_orders, backref="shoppers")
-
-product_cart = db.Table('product_cart',
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('product_id', db.Integer(), db.ForeignKey('product.productCode'))
-    )
+    orders = db.relationship('Shop_order', backref="shop", lazy=True)
 
 class Product(db.Model):
     productCode = db.Column(db.String(), primary_key=True)
@@ -100,6 +92,7 @@ class Product(db.Model):
     pic2 = db.Column(db.String())
     pic3 = db.Column(db.String())
     pic4 = db.Column(db.String())
+    orders = db.relationship('Shop_order', backref='product', lazy=True)
 
 class Book(db.Model):
     code = db.Column(db.String(length=10), nullable=False, primary_key=True)
@@ -163,11 +156,11 @@ class Order(db.Model):
 
 class Shop_order(db.Model):
     code = db.Column(db.String(length=10), nullable=False, primary_key=True)
-    product_code = db.Column(db.String(), nullable=False)
-    shopName=db.Column(db.String(), nullable=False)
-    userName=db.Column(db.String(), nullable=False)
+    product_code = db.Column(db.String(), db.ForeignKey('product.productCode'), nullable=False)
+    shop_id=db.Column(db.Integer(), db.ForeignKey('shop.id'), nullable=False)
+    user_id=db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     time = db.Column(db.DateTime(), nullable=False, default=datetime.now)
     address = db.Column(db.String(), nullable=False)
     town=db.Column(db.String(), nullable=False)
     county=db.Column(db.String(), nullable=False)
-    numberOfItems=db.Column(db.Integer(),nullable=False)
+    numberOfItems=db.Column(db.Integer(), nullable=False)

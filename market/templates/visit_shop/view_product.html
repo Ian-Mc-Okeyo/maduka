@@ -1,0 +1,48 @@
+{% extends 'visit_shop/visit_shop_base.html' %}
+{% block title %}
+    shop.title
+{% endblock %}
+{% block body %}
+    <div style="display: flex; flex-direction: column; height: 100%; align-items: center;">
+        <div id="product-page">
+            <div id="regular-details-section">
+                <div>
+                    <img src="{{  url_for('static', filename='products/'+product.displayPic) }}" id="display-pic">
+                </div>
+                <div id="regular-details">
+                    <div><i>Title: </i>{{ product.title }}</div><br>
+                    <div><i>Price: </i>{{ product.price }}</div><br>
+                    <div><i>Stock: </i>{{ product.stock }}</div><br>
+                    <div><a class="product-update-details-button" href="{{ url_for('make_shop_order', shop_id=shop.id, product_code=product.productCode) }}">Make Order</a></div><br>
+                    <div><a class="product-update-details-button" href="#">Add to cart</a></div>
+                </div>
+            </div>
+            <div id="product-description">
+                {{ product.description }}
+            </div>
+            <div id="extra-pics-section">
+                {% set init_dir = '../../static/products/' %}
+                <div>
+                    {% if product.pic1 %}
+                        <img src="{{  url_for('static', filename='products/'+product.pic1) }}" id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic2 %}
+                        <img src="{{  url_for('static', filename='products/'+product.pic2) }}" id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic3 %}
+                        <img src="{{  url_for('static', filename='products/'+product.pic3) }}" id="display-pic">
+                    {% endif %}
+                </div>
+                <div>
+                    {% if product.pic4 %}
+                        <img src="{{  url_for('static', filename='products/'+product.pic4) }}" id="display-pic">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

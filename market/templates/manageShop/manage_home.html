@@ -5,7 +5,7 @@
 {% block body %}
     <div class = 'products-section'>
         {% for product in products %}
-            <a href="{{ url_for('specific_product_page', product_code=product.productCode) }}" class="products-details">
+            <a href="{{ url_for('specific_product_page', shop_id=current_shop.id, product_code=product.productCode) }}" class="products-details">
                 {% set initial_dir = '../../static/products/' + product.displayPic %}
                 <div><img class='product-display-pic' src={{ initial_dir }}></div>
                 <div >

@@ -1,0 +1,18 @@
+{% extends 'visit_shop/visit_shop_base.html' %}
+{% block title %}
+    shop.title
+{% endblock %}
+{% block body %}
+    <div class = 'products-section'>
+        {% for product in shop.products %}
+            <a href="{{ url_for('view_product_page', product_code=product.productCode, shop_id=shop.id) }}" class="products-details">
+                {% set initial_dir = '../../static/products/' + product.displayPic %}
+                <div><img class='product-display-pic' src={{ initial_dir }}></div>
+                <div >
+                    <p><i>Title</i> {{ product.title }}</p>
+                    <p><i>Price</i> {{ product.price }}</p>
+                </div>
+            </a>
+        {%endfor%}       
+    </div>
+{% endblock %}

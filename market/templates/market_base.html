@@ -11,21 +11,30 @@
         </head>
         <body>
             <nav class="nav-container-authenticated">
-                <div style="order: 2">
+                <div>
                     <a href="{{ url_for('market_page') }}"><h1>SCHOOL MARKET</h1></a>
                 </div>
                 
                 {% if self._TemplateReference__context.name=='details.html' %}
-                    <div style="order: 4; ">
+                    <div>
                         <h2>Personal Details</h2>
                     </div>
                 {% elif self._TemplateReference__context.name=='orders.html' %}
-                    <div style="order: 4;">
+                    <div>
                         <h2>My Orders</h2>
                     </div>
+                {% else %}
+                    <div></div>
                 
                 {% endif %}
-                <div style="order: 5; right: 20%">
+
+                <div class="create-shop-link">
+                    <a href="{{ url_for('create_shop') }}">Create Shop</a>
+                </div>
+                <div class="create-shop-link">
+                    <a href="{{ url_for('searchShop') }}">Visit Shop</a>
+                </div>
+                <div style="margin-left: 40px;">
                     <div class="dropdown">
                         <h3 class="dropbtn" >My Account</h3>
                         <div class="dropdown-content">
@@ -36,9 +45,6 @@
                             <a href="{{ url_for('logout_page') }}">Logout</a>
                         </div>
                     </div>
-                </div>
-                <div style="order: 6" class="create-shop-link">
-                    <a href="{{ url_for('create_shop') }}">Create Shop</a>
                 </div>
             </nav>
         {% for messages in get_flashed_messages(category_filter=['success']) %}

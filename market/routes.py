@@ -1,3 +1,5 @@
+from requests import session
+from sqlalchemy import null
 from market import app
 import secrets
 from PIL import Image
@@ -16,6 +18,8 @@ import pathlib
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
+#sellers functions
 #function to get the specific product type
 def getProductType(productCode):
     product=''
@@ -103,7 +107,7 @@ def create_shop():
                 db.session.add(new_shop)
                 db.session.commit()
                 login_user(attempting_user)
-                return redirect(url_for('manage_home'))
+                return redirect(url_for('manage_home', shop_id = new_shop.id))
         else:
             print('Wrong password')
             flash('Invalid User password', category='error')
@@ -123,7 +127,7 @@ def open_shop():
                     if check_user.check_password_correction(attempted_password=form.password.data):
                         login_user(check_user)
                         flash('Successful Login', category='success')
-                        return redirect(url_for('manage_home'))
+                        return redirect(url_for('manage_home', shop_id=check_shop.id))
                     else:
                         flash('Invalid Password', category='error')
                 else:
@@ -135,26 +139,25 @@ def open_shop():
 
     return render_template('openShop.html', form=form, errors=form.errors)
 
-@app.route('/manageShop', methods=['POST', 'GET'])
+@app.route('/manageShop/<shop_id>', methods=['POST', 'GET'])
 @login_required
-def manage_home():
+def manage_home(shop_id):
     owner = Owner.query.filter_by(user_id=current_user.id).first()
-    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
     print(current_shop.products)
     products = current_shop.products
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
-    return render_template('manageShop/manage_home.html', shopName = current_shop.shopName, 
-                            shopCategory=current_shop.category, profile_pic=profile_pic_fn, products=products)
+    return render_template('manageShop/manage_home.html', current_shop=current_shop, profile_pic=profile_pic_fn, products=products)
 
-@app.route('/manageShop/addProduct', methods=['POST', 'GET'])
-@login_required
-def add_product():
+@app.route('/manageShop/<shop_id>/addProduct', methods=['POST', 'GET'])
+def add_product(shop_id):
+    print('Test id')
     form = addProductForm()
     owner = Owner.query.filter_by(user_id=current_user.id).first()
-    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
@@ -183,24 +186,31 @@ def add_product():
         db.session.add(new_product)
         db.session.commit()
         flash('Product Successfully added', category='success')
-        return redirect(url_for('add_product'))
+        return redirect(url_for('add_product', shop_id=current_shop.id))
     else:
         print(form.errors)
         
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
-    return render_template('manageShop/addProduct.html', form=form, shopName = current_shop.shopName, 
-                            shopCategory=current_shop.category, profile_pic=profile_pic_fn, errors=form.errors)
+    return render_template('manageShop/addProduct.html', form=form, current_shop=current_shop, profile_pic=profile_pic_fn, errors=form.errors)
 
-@app.route('/manageShop/changeDetails', methods=['POST', 'GET'])
-def change_shop_details():
+@app.route('/manageShop/<shop_id>/changeDetails', methods=['POST', 'GET'])
+@login_required
+def change_shop_details(shop_id):
     detailsForm = ShopDetailsForm()
     changePasswordForm=ChangePasswordForm()
     owner = Owner.query.filter_by(user_id=current_user.id).first()
-    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
-        
+    
+         
     if detailsForm.submit1.data and detailsForm.validate_on_submit():
+        if current_shop.shopName != detailsForm.shopName.data:
+            check_shop = Shop.query.filter_by(shopName=detailsForm.shopName.data).first()
+            if check_shop:
+                flash('Shop Name already exists', category='error')
+                return redirect(url_for('change_shop_details', shop_id=shop_id))
+                
         current_user.userName = detailsForm.userName.data
         current_user.email = detailsForm.email.data
         current_user.phoneNo = detailsForm.phoneNo.data
@@ -211,31 +221,32 @@ def change_shop_details():
         current_shop.category = detailsForm.category.data
 
         if detailsForm.displayPic.data:
-            os.unlink(os.path.join(app.root_path, 'static/profile_pics/'+current_shop.profilePic))
+            os.unlink(os.path.join(app.root_path, 'static/profile_pics/'+current_shop.profilePic))#deleting the previous dp
             current_shop.profilePic = save_profile_pic(detailsForm.displayPic.data)
         
         db.session.commit()
 
         flash('Details successfully updated', category='success')
-        return redirect(url_for('change_shop_details'))
+        return redirect(url_for('change_shop_details', shop_id=shop_id))
 
     if changePasswordForm.submit2.data and changePasswordForm.validate_on_submit():
         current_user.password=changePasswordForm.newPassword.data
         db.session.commit()
         flash('Your password has been successfully updated', category='success')
-        return redirect(url_for('change_shop_details'))
+        return redirect(url_for('change_shop_details', shop_id=shop_id))
 
     
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
     return render_template('manageShop/change_details.html', current_shop=current_shop,detailsForm=detailsForm, changePasswordForm=changePasswordForm,
-        profile_pic=profile_pic_fn, shopCategory=current_shop.category, shopName = current_shop.shopName,  details_errors = detailsForm.errors,
+        profile_pic=profile_pic_fn, details_errors = detailsForm.errors,
         password_errors = changePasswordForm.errors)
 
 
-@app.route('/manageShop/<product_code>', methods=['GET', 'POST'])
-def specific_product_page(product_code):
+@app.route('/manageShop/<shop_id>/<product_code>', methods=['GET', 'POST'])
+@login_required
+def specific_product_page(shop_id, product_code):
     owner = Owner.query.filter_by(user_id=current_user.id).first()
-    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
@@ -247,24 +258,146 @@ def specific_product_page(product_code):
 
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
     return render_template('manageShop/seller_product.html', product=product, profile_pic=profile_pic_fn, 
-                    shopCategory=current_shop.category, shopName = current_shop.shopName)
+                    current_shop=current_shop)
 
 
-@app.route('/manageShop/update_product/<product_code>', methods=['POST', 'GET'])
-def update_product_details(product_code):
+@app.route('/manageShop/<shop_id>/update_product/<product_code>', methods=['POST', 'GET'])
+@login_required
+def update_product_details(shop_id, product_code):
     owner = Owner.query.filter_by(user_id=current_user.id).first()
-    current_shop = Shop.query.filter_by(owner_id=owner.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
     if not current_shop:#to redirect users who have no shops to the create shop url
         return redirect(url_for('open_shop'))
     
-    form = upateProductDetails()
+    form = UpdateProductDetails()
     errors = form.errors
     product = Product.query.filter_by(productCode=product_code).first()
 
+    
+    if form.validate_on_submit():
+        product.title = form.title.data
+        product.price = form.price.data
+        product.stock = form.stock.data
+        product.description = form.description.data
+
+        if form.displayPic.data:
+            print('there is dp')
+            os.unlink(os.path.join(app.root_path, 'static/products/'+product.displayPic))#deleting the previous dp
+            product.displayPic = save_product_pic(form.displayPic.data)
+        
+        if len(form.extraPics.data)>0 and form.extraPics.data[0].filename!='':
+            # #deleting the pictures
+            if product.pic1:
+                os.unlink(os.path.join(app.root_path, 'static/products/'+product.pic1))
+            
+            if product.pic2:
+                os.unlink(os.path.join(app.root_path, 'static/products/'+product.pic2))
+            
+            if product.pic3:
+                os.unlink(os.path.join(app.root_path, 'static/products/'+product.pic3))
+            
+            if product.pic4:
+                os.unlink(os.path.join(app.root_path, 'static/products/'+product.pic4))
+            
+            #updating the pictures
+            if len(form.extraPics.data)>0:
+                if len(form.extraPics.data)==1:
+                    product.pic1=save_product_pic(form.extraPics.data[0])
+                    product.pic2=None
+                    product.pic3=None
+                    product.pic4=None
+                elif len(form.extraPics.data)==2:
+                    product.pic1=save_product_pic(form.extraPics.data[0])
+                    product.pic2=save_product_pic(form.extraPics.data[1])
+                    product.pic3=None
+                    product.pic4=None
+                elif len(form.extraPics.data)==3:
+                    product.pic1=save_product_pic(form.extraPics.data[0])
+                    product.pic2=save_product_pic(form.extraPics.data[1])
+                    product.pic3=save_product_pic(form.extraPics.data[2])
+                    product.pic4=None
+                elif len(form.extraPics.data)==4:
+                    product.pic1=save_product_pic(form.extraPics.data[0])
+                    product.pic2=save_product_pic(form.extraPics.data[1])
+                    product.pic3=save_product_pic(form.extraPics.data[2])
+                    product.pic4=save_product_pic(form.extraPics.data[3])
+
+        db.session.commit()
+        flash('Product details successfully updated', category='success')
+        return redirect(url_for('update_product_details', product_code=product.productCode, shop_id=shop_id))
+
+
     profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
     return render_template('manageShop/product_update.html', product=product, profile_pic=profile_pic_fn, form=form, errors=errors,
-                    shopCategory=current_shop.category, shopName = current_shop.shopName, description=product.description)
+                    current_shop= current_shop, description=product.description)
 
+@app.route('/manageShop/<shop_id>/delete_product/<product_code>', methods=['POST', 'GET'])
+@login_required
+def delete_product(shop_id, product_code):
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
+    if not current_shop:#to redirect users who have no shops to the create shop url
+        return redirect(url_for('open_shop'))
+    
+    product = Product.query.filter_by(productCode=product_code).first()
+    #product.delete()
+    try:
+        db.session.delete(product)
+        db.session.commit()
+        flash('product successfully deleted', category='success')
+    except:
+        print('Could not delete product')
+    
+    return redirect(url_for('manage_home', shop_id=shop_id))
+
+
+# beginning of buyers functions
+@app.route('/market/searchshop', methods=['POST', 'GET'])
+@login_required
+def searchShop():
+    shops = Shop.query.all()
+    print(type(shops))
+    print(shops[0].products)
+    return render_template('visit_shop/search_shop.html', shops=shops)
+
+@app.route('/market/visitShop/<shop_id>', methods=['POST', 'GET'])
+@login_required
+def visit_shop(shop_id):
+    shop = Shop.query.filter_by(id=shop_id).first()
+    
+    profile_pic_fn=url_for('static', filename='profile_pics/'+shop.profilePic)
+    return render_template('visit_shop/visit_shop_home.html', shop=shop, profile_pic=profile_pic_fn)
+
+@app.route('/market/visitShop/<shop_id>/makeOrder/<product_code>', methods=['POST', 'GET'])
+@login_required
+def make_shop_order(shop_id, product_code):
+    shop = Shop.query.filter_by(id=shop_id).first()
+    order_form = MakeShopOrderForm()
+    product = Product.query.filter_by(productCode=product_code).first()
+
+    if order_form.validate_on_submit():
+        new_order = Shop_order(code=secrets.token_hex(10), product_code=product_code, shop_id=shop_id, user_id=current_user.id,
+                            address=order_form.address.data, town=order_form.town.data, county=order_form.county.data, numberOfItems=order_form.numberOfItems.data)
+        product.stock=product.stock-order_form.numberOfItems.data
+        db.session.add(new_order)
+        db.session.commit()
+        flash('Order made successfully', category='success')
+        return redirect(url_for('make_shop_order', shop_id=shop_id, product_code=product_code))
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+shop.profilePic)
+    product_dp = url_for('static', filename='products/'+product.displayPic)
+    return render_template('visit_shop/make_order.html', shop=shop, profile_pic=profile_pic_fn, product_dp=product_dp, 
+                    errors=order_form.errors, form=order_form, product=product)
+
+
+@app.route('/market/visitShop/viewProduct/<shop_id>/<product_code>')
+@login_required
+def view_product_page(shop_id, product_code):
+    shop = Shop.query.filter_by(id=shop_id).first()
+    product = Product.query.filter_by(productCode=product_code).first()
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+shop.profilePic)
+    return render_template('visit_shop/view_product.html', shop=shop, profile_pic=profile_pic_fn, product=product)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -306,9 +439,10 @@ def market_page():
     searchForm=SearchForm()
     return render_template('market_index.html', searchForm=searchForm, products=products)
 
-@app.route('/<product_code>/<cart_code>', methods=['GET', 'POST'])
+@app.route('/market/<product_code>/<cart_code>', methods=['GET', 'POST'])
 @login_required
 def product_page(product_code, cart_code):
+    print(product_code)
     product=getProductType(product_code)
 
     if cart_code!='none':
@@ -350,6 +484,7 @@ def product_page(product_code, cart_code):
         print('order made')
 
     return render_template('product.html', searchForm=searchForm, product=product, orderForm=orderForm)
+
 
 @app.route('/market <product_category>')
 @login_required

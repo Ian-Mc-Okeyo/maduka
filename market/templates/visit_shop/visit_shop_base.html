@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/manageShop.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type= "text/javascript" src="{{ url_for('static',filename='scripts/manageShop.js') }}"></script>
+        <title>
+            {% block title %}
+                   
+            {% endblock %}
+        </title>
+    </head>
+    <body style="background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );">
+        <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img id="logo" src={{ profile_pic }}>
+                      </div>
+                      <div class="flip-card-back">
+                        <h2>{{ shop.shopName }}</h2>
+                        <p>{{ shop.category }}</p>
+                      </div>
+                </div>
+            </div>
+        </div>
+        <div class="header">
+        </div>
+        <!-- The overlay -->
+        <div id="myNav" class="overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        
+            <!-- Overlay content -->
+            <div class="overlay-content">
+                <a href="{{ url_for('visit_shop', shop_id=shop.id) }}">Home</a>
+                <a href="#">My Orders</a>
+                <a href="#">Cart</a>
+                <a href="#">Messages</a>
+                <a href="{{ url_for('market_page') }}">Exit Shop</a>
+                <a href="{{url_for('logout_page')}}">Logout</a>
+            </div>
+  
+        </div>
+        <div id="navbar">
+            <div>
+                <button class="open-menu-button" onclick="openNav()">☰ Menu</button>
+            </div>
+            <div><h2>Maduka.com</h2></div>
+            <div>
+                <a href="#">Messages</a>
+            </div>
+            <div>
+                <a href="#">Orders(8)</a>
+            </div>
+        </div>
+        {% for messages in get_flashed_messages(category_filter=['success']) %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% for messages in get_flashed_messages(category_filter=['error']) %}
+            <div class="alert" style="background-color: rgb(241, 102, 102);">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ messages }}
+            </div>
+        {% endfor %}
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

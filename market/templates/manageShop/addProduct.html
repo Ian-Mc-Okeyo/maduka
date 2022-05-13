@@ -20,8 +20,25 @@
             <div style=" color: rgb(245, 114, 114);">{{ errors['price'] }}</div>
 
             <div>
-                {{ form.description(class='text-area', placeholder='More details about the product')}}
+                {{ form.description(id='text-area', placeholder='More details about the product')}}
             </div>
+            <script>
+                 const ele = document.getElementById('text-area');
+
+                ele.addEventListener('keydown', function (e) {
+                    // Get the code of pressed key
+                    const keyCode = e.which || e.keyCode;
+
+                    // 13 represents the Enter key
+                    if (keyCode === 13 && !e.shiftKey) {
+                        // Don't generate a new line
+                        e.preventDefault();
+
+                        // Do something else such as send the message to back-end
+                        // ...
+                    }
+                });
+            </script>
             <div style=" color: rgb(245, 114, 114);">{{ errors['description'] }}</div>
 
             <div>

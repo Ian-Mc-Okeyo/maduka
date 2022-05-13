@@ -11,7 +11,7 @@
             {% endblock %}
         </title>
     </head>
-    <body>
+    <body style="background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );">
         <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
             <div class="flip-card">
                 <div class="flip-card-inner">
@@ -19,8 +19,8 @@
                         <img id="logo" src={{ profile_pic }}>
                       </div>
                       <div class="flip-card-back">
-                        <h2>{{ shopName }}</h2>
-                        <p>{{ shopCategory }}</p>
+                        <h2>{{ current_shop.shopName }}</h2>
+                        <p>{{ current_shop.category }}</p>
                       </div>
                 </div>
             </div>
@@ -35,11 +35,11 @@
         
             <!-- Overlay content -->
             <div class="overlay-content">
-                <a href="{{url_for('add_product')}}">Add Product</a>
+                <a href="{{ url_for('add_product', shop_id=current_shop.id) }}">Add Product</a>
                 <a href="#">Orders</a>
-                <a href="{{ url_for('change_shop_details') }}">Change Details</a>
+                <a href="{{ url_for('change_shop_details', shop_id=current_shop.id) }}">Change Details</a>
                 <a href="#">Messages</a>
-                <a href="{{ url_for('manage_home') }}">Home</a>
+                <a href="{{ url_for('manage_home', shop_id = current_shop.id) }}">Home</a>
             </div>
   
         </div>

@@ -1,11 +1,7 @@
 import math
-import geocoder
-import folium
 import webbrowser
-import geopy
 import socket
 import os
-import IP2Location
 import json
 from urllib.request import urlopen
 from random import randint
@@ -26,11 +22,13 @@ from random import randint
 # response = urlopen(url)
 # data=json.load(response)
 # g = randint(1000000000, 9999999999)
-x='Change order 23456789'
-print(x[13:])
-print('/')
+# x='Change order 23456789'
+# print(x[13:])
+# print('/')
 #os.remove("./static/profile_pics/9b77d791adabd90fafad.jpeg")
 
-import pathlib
-path = pathlib.Path('6aeb1997de6afde298e6.jpeg')
-print(path)
+# 
+
+
+q = 'My name is Ian\nMark\nOkeyo'
+print(q.replace('\n', ' '))
