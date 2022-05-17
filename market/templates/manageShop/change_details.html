@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
 <div id="change-details-section">
-    <form class="form-area" method='POST' enctype="multipart/form-data" style="flex: 1; min-width: 300px;">
+    <form class="form-area" method='POST' enctype="multipart/form-data" style="flex: 1; min-width: 250px;">
          {{ detailsForm.hidden_tag() }}
          <h2>Shop details</h2>
          {{ detailsForm.userName.label(id='details-label') }}  <br>
@@ -42,7 +42,7 @@
          <b style="color: rgb(250, 87, 87); margin-top: -50px">{{ details_errors['displayPic'] }}</b>  <br>
          {{ detailsForm.submit1(class='change-details-submit') }}
     </form>
-    <form method='POST' class="form-area" style="flex: 1; min-width: 300px;">
+    <form method='POST' class="form-area" style="flex: 1; min-width: 250px;">
         {{ changePasswordForm.hidden_tag() }}
         <h2>Change Password</h2>
         {{ changePasswordForm.oldPassword.label(id='details-label') }}   <br>       

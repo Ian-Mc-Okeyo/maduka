@@ -1,0 +1,31 @@
+{% extends 'manageShop/manage_base.html' %}
+{% block title %}
+    Manage Orders
+{% endblock %}
+{% block body %}
+    <div id="manage-orders-page-layout">
+        {% if current_shop.orders|length==0 %}
+        <div style="text-align: center;">
+            <h1>You have no orders made to your Shop.</h1>
+        </div>
+        {%else%}
+            {% for i in range(current_shop.orders|length) %}
+                <div class="order-section">
+                    <div style="background-color: white;">
+                        <img src="{{  url_for('static', filename='products/'+products_ordered[i].displayPic) }}" class="order-img">
+                    </div>
+                    <div class="order-details-section">
+                        <div><i>Customer Name: </i>{{ customers[i].userName }}</div>
+                        <div><i>Customer Phone No: </i>{{ customers[i].phoneNo }}</div>
+                        <div><i>Customer Email: </i>{{ customers[i].email }}</div>
+                        <div><i>Number of Items: </i>{{ current_shop.orders[i].numberOfItems }}</div>
+                        <div><i>Order date: </i>{{ current_shop.orders[i].time }}</div>
+                        <div><i>County: </i>{{ current_shop.orders[i].county }}</div>
+                        <div><i>Town: </i>{{ current_shop.orders[i].town }}</div>
+                        <div><i>Address: </i>{{ current_shop.orders[i].address }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -14,7 +14,7 @@
                     <div><i>Price: </i>{{ product.price }}</div><br>
                     <div><i>Stock: </i>{{ product.stock }}</div><br>
                     <div><a class="product-update-details-button" href="{{ url_for('make_shop_order', shop_id=shop.id, product_code=product.productCode) }}">Make Order</a></div><br>
-                    <div><a class="product-update-details-button" href="#">Add to cart</a></div>
+                    <div><a class="product-update-details-button" href="{{ url_for('add_shop_product_to_cart', shop_id=shop.id, product_code=product.productCode) }}">Add to cart</a></div>
                 </div>
             </div>
             <div id="product-description">

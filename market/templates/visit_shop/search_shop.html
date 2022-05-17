@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/manageShop.css') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type= "text/javascript" src="{{ url_for('static',filename='scripts/manageShop.js') }}"></script>
-        <title>
-            Search Shop
-        </title>
-    </head>
-    <body style='background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1));' class="search-page-body">
+{% extends 'visit_shop/customer_base.html' %}
+{% block title %}
+    shop.title
+{% endblock %}
+{% block body %}
+    <div class="search-page-body">
         <h1>Welcome to Maduka.com</h1>
         <h2>Find and visit any shop of Your choice</h2>
         <h2>Order any product from the shop of your choice</h2>
@@ -31,38 +25,5 @@
                 </a>
             {% endfor %}
         </div>
-    </body>
-</html>
-<script>
-    // console.log('The page is working')
-    // let slideIndex = 0;
-    // showSlides();
-    // testSlide();
-
-    // function showSlides() {
-    //     let i;
-    //     let slides = document.getElementsByClassName("mySlides");
-    //     console.log(slides.length)
-    //     for (i = 0; i < slides.length; i++) {
-    //         slides[i].style.display = "none";
-    //     }
-    //     slideIndex++;
-    //     if (slideIndex > slides.length) {slideIndex = 1}
-    //     slides[slideIndex-1].style.display = "block";
-    //     setTimeout(showSlides, 2000); // Change image every 2 seconds
-    // }
-    // function testSlide(){
-    //     let i;
-    //     let slides = document.getElementsByClassName("test-slides");
-    //     console.log(slides.length)
-    //     for (i = 0; i < slides.length; i++) {
-    //         slides[i].style.display = "none";
-    //     }
-    //     slideIndex++;
-    //     if (slideIndex > slides.length) {slideIndex = 1}
-    //     slides[slideIndex-1].style.display = "block";
-    //     setTimeout(testSlide, 2500); // Change image every 2 seconds
-    // };
-
-
-</script>
+    </div>
+{% endblock %}

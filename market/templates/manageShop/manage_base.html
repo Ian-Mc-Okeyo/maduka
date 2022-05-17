@@ -36,10 +36,11 @@
             <!-- Overlay content -->
             <div class="overlay-content">
                 <a href="{{ url_for('add_product', shop_id=current_shop.id) }}">Add Product</a>
-                <a href="#">Orders</a>
+                <a href="{{ url_for('manage_orders', shop_id=current_shop.id) }}">Orders</a>
                 <a href="{{ url_for('change_shop_details', shop_id=current_shop.id) }}">Change Details</a>
                 <a href="#">Messages</a>
                 <a href="{{ url_for('manage_home', shop_id = current_shop.id) }}">Home</a>
+                <a href="{{url_for('logout_page')}}">Logout</a>
             </div>
   
         </div>
@@ -47,15 +48,12 @@
             <div>
                 <button class="open-menu-button" onclick="openNav()">☰ Menu</button>
             </div>
-            <div></div>
+            <div><h2>Maduka.com</h2></div>
             <div>
                 <a href="#">Messages</a>
             </div>
             <div>
-                <a href="#">Orders(8)</a>
-            </div>
-            <div>
-                <a href="{{url_for('logout_page')}}">Logout</a>
+                <a href="{{ url_for('manage_orders', shop_id=current_shop.id) }}">Orders(8)</a>
             </div>
         </div>
         {% for messages in get_flashed_messages(category_filter=['success']) %}

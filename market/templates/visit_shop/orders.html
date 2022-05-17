@@ -1,0 +1,32 @@
+{% extends 'visit_shop/customer_base.html' %}
+{% block title %}
+    My Orders
+{% endblock %}
+{% block body %}
+    <div id="manage-orders-page-layout">
+        {% if current_user.shop_orders|length==0 %}
+        <div style="text-align: center;">
+            <h1>You have no orders made.</h1>
+        </div>
+        {%else%}
+            {% for i in range(current_user.shop_orders|length) %}
+                <div class="order-section">
+                    <div style="background-color: white;">
+                        <img src="{{  url_for('static', filename='products/'+products_ordered[i].displayPic) }}" class="order-img">
+                    </div>
+                    <div class="order-details-section">
+                        <div><i>Product: </i>{{ products_ordered[i].title }}</div>
+                        <div><i>Shop Name: </i>{{ shops[i].shopName }}</div>
+                        <div><i>Number of Items: </i>{{ current_user.shop_orders[i].numberOfItems }}</div>
+                        <div><i>Order date: </i>{{ current_user.shop_orders[i].time }}</div>
+                        <div><i>County: </i>{{ current_user.shop_orders[i].county }}</div>
+                        <div><i>Town: </i>{{ current_user.shop_orders[i].town }}</div>
+                        <div><i>Address: </i>{{ current_user.shop_orders[i].address }}</div>
+                        <div style="text-align: center;"><a class="cart-page-buttons" href="{{ url_for('view_shop_details', shop_id=current_user.shop_orders[i].shop_id) }}">View Shop details</a></div>
+                        <div style="text-align: center;"><a class="cart-page-buttons" href="{{ url_for('delete_order', order_id=current_user.shop_orders[i].code) }}">Delete Order</a></div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

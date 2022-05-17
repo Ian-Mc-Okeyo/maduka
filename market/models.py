@@ -26,7 +26,7 @@ uniform_cart = db.Table('uniform_cart',
 
 product_cart = db.Table('product_cart',
     db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('product_id', db.Integer(), db.ForeignKey('product.productCode'))
+    db.Column('product_id', db.String(), db.ForeignKey('product.productCode'))
     )
 
 orders = db.Table('orders_cart',

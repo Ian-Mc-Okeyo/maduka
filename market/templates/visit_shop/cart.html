@@ -1,0 +1,90 @@
+{% extends 'visit_shop/customer_base.html' %}
+{% block title %}
+    cart {{ current_user.userName }}
+{% endblock %}
+{% block body %}
+    <div class="cart-page-layout">
+      {% for product in current_user.products_cart %}
+        <div class="cart-product-card">
+          <div>
+            <img src="{{  url_for('static', filename='products/'+product.displayPic) }}" class="cart-img">
+          </div>
+          <div class="cart-details">
+            <div><i>Title: </i>{{ product.title }}</div>
+            <div><i>Price: </i>{{ product.price }}</div>
+            <div><i>Stock: </i>{{ product.numberOfItems }}</div>
+            <div style="text-align: center;"><a class="cart-page-buttons" href="{{ url_for('make_shop_order', product_code=product.productCode, shop_id=product.shop_id) }}">Make Order</a></div>
+            <div style="text-align: center;"><a class="cart-page-buttons" href="{{ url_for('view_product_page', product_code=product.productCode, shop_id=product.shop_id) }}">View in Shop</a></div>
+            <div style="text-align: center;"><a class="cart-page-buttons" href="{{ url_for('delete_from_cart', product_code=product.productCode) }}">Remove from cart</a></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <style>       
+        
+        /* The popup form - hidden by default */
+        .form-popup {
+          display: none;
+          position:relative;
+          top: 10px;
+          right: 15px;
+          border: 3px solid #f1f1f1;
+          z-index: 9;
+        }
+        
+        /* Add styles to the form container */
+        .form-container {
+          max-width: 400px;
+          padding: 10px;
+          background-color: white;
+        }
+        
+        /* Full-width input fields */
+        .form-container input[type=text], .form-container input[type=password], .form-container input[type=number] {
+          width: 100%;
+          padding: 15px;
+          margin: 5px 0 22px 0;
+          border: none;
+          background: #f1f1f1;
+        }
+        
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+          background-color: #ddd;
+          outline: none;
+        }
+        
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+          background-color: rgb(255, 217, 0);
+          color: black;
+          font-weight: 900;
+          padding: 16px 20px;
+          border: none;
+          cursor: pointer;
+          width: 100%;
+          margin-bottom:10px;
+          opacity: 0.8;
+        }
+        
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+          background-color: red;
+        }
+        
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover{
+          opacity: 1;
+        }
+    </style>
+    <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+        
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+    </script>
+{% endblock %}
+</html>

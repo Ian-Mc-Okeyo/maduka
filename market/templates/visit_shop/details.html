@@ -1,49 +1,46 @@
-{% extends 'market_base.html' %}
+{% extends 'visit_shop/customer_base.html' %}
 {% block title %}
     Home
 {% endblock %}
 {% block body %}
- <div id='details-page-layout'>
-     <div id='details-section-layout'>
-        <form method="POST">
+ <div id='change-details-section'>
+        <form method="POST" class="form-area">
          {{ detailsForm.hidden_tag() }}
             <div style="margin-bottom: 50px;">
                {{ detailsForm.userName.label(id='details-label') }} <br>
-               {{ detailsForm.userName(id='details-form', value=current_user.userName) }}
+               {{ detailsForm.userName(class='change-details-forms', value=current_user.userName) }}
             </div>
             <div style="margin-bottom: 50px;">
                {{ detailsForm.email.label(id='details-label') }}  <br>
-               {{ detailsForm.email(id='details-form', value=current_user.email) }}
+               {{ detailsForm.email(class='change-details-forms', value=current_user.email) }}
             </div>
             <div style="margin-bottom: 50px;">
                {{ detailsForm.phoneNo.label(id='details-label') }}  <br>
-               {{ detailsForm.phoneNo(id='details-form', value=current_user.phoneNo) }}
+               {{ detailsForm.phoneNo(class='change-details-forms', value=current_user.phoneNo) }}
             </div>
             <div> 
-               {{ detailsForm.submit1(id='details-submit') }}
+               {{ detailsForm.submit1(class='change-details-submit') }}
             </div>
         </form>
-     </div>
-     <div id='details-section-layout'>
-        <form method="POST">
+        <form method="POST" class="form-area">
            {{ changePasswordForm.hidden_tag() }}
             <div style="margin-bottom: 50px;">
                {{ changePasswordForm.oldPassword.label(id='details-label') }} <br>               
-               {{ changePasswordForm.oldPassword(id='details-form') }} <br>
+               {{ changePasswordForm.oldPassword(class='change-details-forms') }} <br>
                <b style="color: red; margin-top: -50px">{{ errors['oldPassword'][0] }}</b>               
             </div>
             <div style="margin-bottom: 50px;">
                {{ changePasswordForm.newPassword.label(id='details-label') }}<br>
-               {{ changePasswordForm.newPassword(id='details-form') }}</br>
+               {{ changePasswordForm.newPassword(class='change-details-forms') }}</br>
                <b style="color: red;">{{ errors['newPassword'][0] }}
             </div>
             <div style="margin-bottom: 50px;">
                {{ changePasswordForm.confirmPassword.label(id='details-label') }}<br>
-               {{ changePasswordForm.confirmPassword(id='details-form') }}</br>
+               {{ changePasswordForm.confirmPassword(class='change-details-forms') }}</br>
                <b style="color: red; margin-top: -50px">{{ errors['confirmPassword'][0] }}
             </div>
             <div>
-                  {{ changePasswordForm.submit2(id='details-submit') }}
+                  {{ changePasswordForm.submit2(class='change-details-submit') }}
             </div>
         </form>
      </div>

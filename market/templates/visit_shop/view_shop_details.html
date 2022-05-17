@@ -1,0 +1,20 @@
+{% extends 'visit_shop/visit_shop_base.html' %}
+{% block title %}
+    Shop details
+{% endblock %}
+{% block body %}
+    <div style="display: flex; flex-direction: column; align-items: center;"66>
+        <div class = 'shop-details-section'>
+            <h2>Shop Info</h2>
+            <div><b>Shop Name:</b> {{ shop.shopName }} </div>
+            <div><b>Shop Category:</b> {{ shop.category }} </div>
+            <div><b>Shop paybill:</b> {{ shop.paybill }} </div>
+            <h2>Contact Info</h2>
+            <div><b>Phone Number:</b> {{ owner.phoneNo }} </div>
+            <div><b>Email: </b> {{ owner.email }} </div>
+            <h2>Location Info</h2>
+            <div><b>Country: </b> {{ shop.country }} </div>
+            <div><b>Town: </b> {{ shop.town }} </div>
+        </div>
+    </div>
+{% endblock %}

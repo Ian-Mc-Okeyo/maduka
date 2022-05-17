@@ -47,7 +47,7 @@ def register_page():
         db.session.commit()
         flash('Account successfully created', category='success')
         login_user(new_user)
-        return redirect(url_for('market_page'))
+        return redirect(url_for('searchShop'))
     
     else:
         print(form.errors)
@@ -350,6 +350,29 @@ def delete_product(shop_id, product_code):
     
     return redirect(url_for('manage_home', shop_id=shop_id))
 
+@app.route('/mangeShop/<shop_id>/manageOrders')
+@login_required
+def manage_orders(shop_id):
+    owner = Owner.query.filter_by(user_id=current_user.id).first()
+    current_shop = Shop.query.filter_by(owner_id=owner.id, id=shop_id).first()
+    if not current_shop:#to redirect users who have no shops to the create shop url
+        return redirect(url_for('open_shop'))
+
+    products_ordered = []
+    customers = []
+
+    for order in current_shop.orders:
+        product = Product.query.filter_by(productCode=order.product_code).first()
+        products_ordered.append(product)
+
+        customer = User.query.filter_by(id=order.user_id).first()
+        customers.append(customer)
+    
+    print(customers[0].userName)
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+current_shop.profilePic)
+    return render_template('manageShop/manage_orders.html', current_shop=current_shop, profile_pic=profile_pic_fn, products_ordered=products_ordered,
+                            customers=customers)
 
 # beginning of buyers functions
 @app.route('/market/searchshop', methods=['POST', 'GET'])
@@ -390,6 +413,21 @@ def make_shop_order(shop_id, product_code):
                     errors=order_form.errors, form=order_form, product=product)
 
 
+@app.route('/market/visitShop/viewProduct/addtocart/<shop_id>/<product_code>', methods=['POST', 'GET'])
+@login_required
+def add_shop_product_to_cart(shop_id, product_code):
+    product = Product.query.filter_by(productCode=product_code).first()
+    #print(product.users_interested)
+    print(current_user.products_cart)
+    if current_user in product.users_interested:
+        flash('The product is already added to cart', category='error')
+    else:
+        current_user.products_cart.append(product)
+        db.session.commit()
+        flash('Product successfully added to cart', category='success')
+    
+    return redirect(url_for('view_product_page', shop_id=shop_id, product_code=product_code))
+
 @app.route('/market/visitShop/viewProduct/<shop_id>/<product_code>')
 @login_required
 def view_product_page(shop_id, product_code):
@@ -399,6 +437,16 @@ def view_product_page(shop_id, product_code):
     profile_pic_fn=url_for('static', filename='profile_pics/'+shop.profilePic)
     return render_template('visit_shop/view_product.html', shop=shop, profile_pic=profile_pic_fn, product=product)
 
+@app.route('/market/visitShop/shop_details/<shop_id>')
+@login_required
+def view_shop_details(shop_id):
+    shop = Shop.query.filter_by(id=shop_id).first()
+    print(shop.owner)
+    owner = User.query.filter_by(id=shop.owner.user_id).first()
+
+    profile_pic_fn=url_for('static', filename='profile_pics/'+shop.profilePic)
+    return render_template('visit_shop/view_shop_details.html', shop=shop, profile_pic=profile_pic_fn, owner=owner)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form=LoginForm()
@@ -407,7 +455,7 @@ def login_page():
         if attempting_user and attempting_user.check_password_correction(attempted_password=form.password.data):
             login_user(attempting_user)
             flash('Successful LogIn', category='success')
-            return redirect(url_for('market_page'))
+            return redirect(url_for('searchShop'))
         else:
             flash('Invalid details', category='error')
     
@@ -502,100 +550,45 @@ def all_page(product_category):
     searchForm=SearchForm()
     return render_template('all_products.html', products=products, searchForm=searchForm, product_category=product_category)
 
-@app.route('/cart <cart_code>')
+@app.route('/visitShop/cart')
 @login_required
-def cart_page(cart_code):
-    searchForm=SearchForm()
-    print(cart_code)
-    #book = Book.query.filter_by(code='123456789012').first()
+def cart_page():
+    return render_template('visit_shop/cart.html')
 
-    products_cart = {'books':[], 'stationery':[], 'lab':[], 'uniform':[]}
-    for book in current_user.books_cart:
-        products_cart['books'].append(book)
-    for stationery in current_user.stationery_cart:
-        products_cart['stationery'].append(stationery)
-    for lab in current_user.lab_cart:
-        products_cart['lab'].append(lab)
-    for uniform in current_user.uniform_cart:
-        products_cart['uniform'].append(uniform)
-    
-    #checking if all the carts category are empty
-    is_products_cart_empty=0
-    for key in products_cart:
-        if len(products_cart[key])>0:
-            is_products_cart_empty+=1 #if any cart is has a product, then we update is_product_cart_empty variable
-            break
-
-    if is_products_cart_empty==0:
-        products_cart='empty'
-
-    cartForm = RemoveFromCartForm()
-    orderForm = OrderForm()
-
-    if cart_code!='none':
-        print(cart_code)
-        print('A cart button was clicked')
-        if cart_code[0]=='U':
-            product=Uniform.query.filter_by(code=cart_code).first()
-            current_user.uniform_cart.remove(product)
-        if cart_code[0]=='S':
-            product=Stationery.query.filter_by(code=cart_code).first()
-            current_user.stationery_cart.remove(product)
-        if cart_code[0]=='L':
-            product=Lab.query.filter_by(code=cart_code).first()
-            current_user.lab_cart.remove(product)
-        if cart_code[0]=='B' or cart_code[0]=='1':
-            product=Book.query.filter_by(code=cart_code).first()
-            print(current_user.books_cart)
-            current_user.books_cart.remove(product)
-        db.session.commit()
-        #flash(f'{product.title} has been removed from your cart', category='success')
-        return redirect(url_for("cart_page", cart_code='none'))
-    else:
-        print('The cart code was not clicked')
-    if orderForm.submit2.data and orderForm.validate_on_submit:
-        print()
-        print('An order button was clicked')
-    
-    return render_template('cart.html', searchForm=searchForm, products_cart=products_cart, cartForm=cartForm, orderForm=orderForm)
-
-@app.route('/Myorders/<order_code_to_cancel>/<product_code_to_cancel>', methods=['GET', 'POST'])
+@app.route('/visitShop/cart/delete/<product_code>')
 @login_required
-def order_page(order_code_to_cancel, product_code_to_cancel):
-    products=[]
-    orders=[]
-    for order in current_user.orders:
-        product=getProductType(order.product_code)        
-        products.append(product)
-        orders.append(order)
-    
-    #order_cancellation
-    if order_code_to_cancel !='none':
-        product_to_remove=getProductType(product_code_to_cancel)
-        order_to_remove = Order.query.filter_by(code=order_code_to_cancel).first()
-        current_user.orders.remove(order_to_remove)
-        product_to_remove.numberOfItems+=order_to_remove.numberOfItems#adding back the stock that was added
-        db.session.commit()
-        return redirect(url_for('order_page', order_code_to_cancel='none', product_code_to_cancel='none'))
-    
-    #changing the order details
-    orderForm=OrderForm()
+def delete_from_cart(product_code):
+    product = Product.query.filter_by(productCode=product_code).first()
+    current_user.products_cart.remove(product)
+    db.session.commit()
+    flash('Product successfully removed from cart', category='success')
+    return redirect(url_for('cart_page'))
 
-    if orderForm.submit2.data and orderForm.validate_on_submit:
-        order_code_to_change=orderForm.submit2._value()[13:]
-        order_to_change=Order.query.filter_by(code=order_code_to_change).first()
-        product_ordered = getProductType(order_to_change.product_code)
+@app.route('/visitShop/Myorders/', methods=['GET', 'POST'])
+@login_required
+def order_page():
+    products_ordered = []
+    shops = []
 
-        #updates
-        product_ordered.numberOfItems+=order_to_change.numberOfItems#updating the number of items of the specific product
-        product_ordered.numberOfItems-=orderForm.numberOfItems.data
-        order_to_change.address, order_to_change.county=orderForm.address.data, orderForm.county.data
-        order_to_change.town, order_to_change.numberOfItems=orderForm.town.data, orderForm.numberOfItems.data
-        db.session.commit()
+    for order in current_user.shop_orders:
+        product = Product.query.filter_by(productCode=order.product_code).first()
+        products_ordered.append(product)
+
+        shop = Shop.query.filter_by(id=order.shop_id).first()
+        shops.append(shop)
         
-        return redirect(url_for('order_page', order_code_to_cancel='none', product_code_to_cancel='none'))
-        
-    return render_template('orders.html', products=products, orders=orders, orderForm=orderForm)
+    return render_template('visit_shop/orders.html', products_ordered=products_ordered, shops=shops)
+
+@app.route('/visitShop/Myorders/deleteOrder/<order_id>', methods=['GET', 'POST'])
+@login_required
+def delete_order(order_id):
+    print(order_id)
+    order = Shop_order.query.filter_by(code=order_id).first()
+    print (order.user_id)
+    db.session.delete(order)
+    db.session.commit()
+    flash('The order has successfully been deleted', category='success')
+    return redirect(url_for('order_page'))
 
 @app.route('/myDetails', methods=['POST', 'GET'])
 @login_required
@@ -635,7 +628,7 @@ def details_page():
             flash('Your password has been successfully updated', category='success')
         redirect (url_for('details_page'))
 
-    return render_template('details.html', detailsForm=detailsForm, changePasswordForm=changePasswordForm, errors=errors)
+    return render_template('visit_shop/details.html', detailsForm=detailsForm, changePasswordForm=changePasswordForm, errors=errors)
 
 @app.route('/logout')
 def logout_page():

@@ -11,22 +11,7 @@
             {% endblock %}
         </title>
     </head>
-    <body style="background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1) );">
-        <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                      <div class="flip-card-front">
-                        <img id="logo" src={{ profile_pic }}>
-                      </div>
-                      <div class="flip-card-back">
-                        <h2>{{ shop.shopName }}</h2>
-                        <p>{{ shop.category }}</p>
-                      </div>
-                </div>
-            </div>
-        </div>
-        <div class="header"></div>
-        <!-- The overlay -->
+    <body style='background: linear-gradient(164deg, rgb(188, 123, 232) , rgba(246,140,255,1) , rgba(255,222,50,1));' class="search-page-body">
         <div id="myNav" class="overlay">
 
             <!-- Button to close the overlay navigation -->
@@ -34,10 +19,11 @@
         
             <!-- Overlay content -->
             <div class="overlay-content">
-                <a href="{{ url_for('visit_shop', shop_id=shop.id) }}">Shop Home Page</a>
-                <a href="{{ url_for('view_shop_details', shop_id=shop.id) }}">View Shop details</a>
+                <a href="{{ url_for('searchShop') }}">Home</a>
+                <a href="{{ url_for('order_page') }}">My Orders</a>
+                <a href="{{ url_for('cart_page') }}">My Cart</a>
                 <a href="#">Messages</a>
-                <a href="{{ url_for('searchShop') }}">Exit Shop</a>
+                <a href="{{ url_for('details_page') }}">Change Details</a>
                 <a href="{{url_for('logout_page')}}">Logout</a>
             </div>
   
@@ -49,6 +35,9 @@
             <div><h2>Maduka.com</h2></div>
             <div>
                 <a href="#">Messages</a>
+            </div>
+            <div class="create-shop-link">
+                <a href="{{ url_for('create_shop') }}">Create Shop</a>
             </div>
         </div>
         {% for messages in get_flashed_messages(category_filter=['success']) %}
